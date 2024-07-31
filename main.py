@@ -46,6 +46,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.inputVirtualSampleRadioButton.setChecked(True)
         self.selectSamplesWidget.setVisible(False)
         self.manualVirtualSampleWidget.setVisible(False)
+        self.model = QStandardItemModel()
         self.training_sample = None
         self.virtual_sample = None
 
@@ -74,7 +75,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if state == 2:  # 选中状态
             if element not in self.selected_elements:
                 self.selected_elements.append(element)
-                dataset = {'data': self.sample_data[element], 'minimum': min(self.sample_data[element]), 'maximum': max(self.sample_data[element]), 'step': 0}
+                dataset = self.sample_data[element]
                 self.selected_sample_data[element] = dataset
 
         else:  # 未选中状态
@@ -97,6 +98,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def show_select_element(self):
         scroll_content = QWidget()
         layout = QVBoxLayout(scroll_content)
+
         # 定义元素列表
         self.elements = list(self.training_sample.columns)
         # 用于存储选中的QCheckBox
@@ -159,6 +161,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if file_contents['virtual_sample']['virtual_sample_file_extension'] in ['xls', 'xlsx']:
                 self.display_excel_content(self.virtual_sample, self.virtualSampleTableView)
         else:
+            self.virtual_sample = None
+            self.nameComboBox.clear()
+            # 创建新的空模型
+            empty_model = QStandardItemModel()
+
+            # 设置空模型给 QTableView
+            self.virtualSampleTableView.setModel(empty_model)
+
             self.show_select_element()
 
     def get_uploaded_parameters(self, setting):
@@ -183,11 +193,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         header.setSectionResizeMode(QHeaderView.Stretch)
 
     def get_training_sample_data(self, training_sample):
+        self.sample_data = {}
+        self.selected_sample_data = {}
         training_sample_dict = training_sample.to_dict(orient='list')
         for key, value in training_sample_dict.items():
             dataset = {'data': value, 'minimum': min(value), 'maximum': max(value), 'step': 0}
             self.sample_data[key] = dataset
-        self.selected_sample_data = self.sample_data
+        self.selected_sample_data = self.sample_data.copy()
 
     def get_virtual_sample_data(self):
         virtual_samples = [values['virtual_sample'] for key, values in self.selected_sample_data.items()]
