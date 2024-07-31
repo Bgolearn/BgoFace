@@ -1,3 +1,23 @@
-`pip install pyqt5 pyinstaller`
+## BgoFace: The User Interface of the Bgolearn Platform
 
-`pyinstaller --onefile --windowed main.py`
+### Dependent Packages
+- **scikit-learn (sklearn)**: A machine learning library for Python.
+- **Bgolearn**: A Bayesian global optimization package for Material Design.
+
+### UI Encapsulation
+To encapsulate the user interface and create a standalone application, follow these steps:
+
+1. **Install necessary packages:**
+   ```bash
+   pip install pyqt5 pyinstaller
+   ```
+
+2. **Package the application using PyInstaller:**
+   ```bash
+   pyinstaller --onefile --windowed main.py
+   ```
+   This command creates a single executable file from `main.py` without opening a console window.
+
+   
+### Acknowledgement:
+If you utilize the data/code from this repo, please reference our paper.
