@@ -22,6 +22,7 @@ To encapsulate the user interface and create a standalone application, follow th
 ### Acknowledgement:
 If you utilize the data/code from this repo, please reference our paper.
 
+---
 
 ### License and Usage
 © 2024 BgoFace Development Team. All rights reserved.
