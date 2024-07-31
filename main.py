@@ -241,7 +241,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.get_virtual_sample_data()
 
     def fit(self):
-        if len(self.selected_elements) == 0 or self.virtual_sample is None:
+        if self.training_sample is None or self.virtual_sample is None:
             QMessageBox.warning(self, "Warning", "Please enter suitable training sample and virtual sample！")
             return
         x = self.training_sample[self.selected_elements]
