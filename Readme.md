@@ -1,4 +1,4 @@
-## [BgoFace](https://github.com/Bin-Cao/Bgolearn): The User Interface of the Bgolearn Platform
+## BgoFace: The User Interface of the [Bgolearn](https://github.com/Bin-Cao/Bgolearn) Platform
 
 ### Dependent Packages
 - **scikit-learn (sklearn)**: A machine learning library for Python.
