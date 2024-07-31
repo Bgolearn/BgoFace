@@ -244,7 +244,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.training_sample is None or self.virtual_sample is None:
             QMessageBox.warning(self, "Warning", "Please enter suitable training sample and virtual sample！")
             return
-        x = self.training_sample[self.selected_elements]
+        if self.inputVirtualSampleRadioButton.isChecked():
+            x = self.training_sample.iloc[:, :-1]
+        else:
+            x = self.training_sample[self.selected_elements]
         y = self.training_sample.iloc[:, -1]
         Bgolearn = BGOS.Bgolearn()
 
@@ -252,6 +255,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             opt_num = self.parameters_setting['opt_num']
             min_search = self.parameters_setting['min_search']
             Dynamic_W = self.parameters_setting['Dynamic_W']
+            print(x)
+            print(y)
+            print(self.virtual_sample)
             Mymodel = Bgolearn.fit(data_matrix=x, Measured_response=y, virtual_samples=self.virtual_sample, opt_num=opt_num, min_search=min_search, Dynamic_W=Dynamic_W)
             if self.parameters_setting['function'] == 'EI':
                 self.resultWindow.show()
