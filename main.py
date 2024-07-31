@@ -255,9 +255,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             opt_num = self.parameters_setting['opt_num']
             min_search = self.parameters_setting['min_search']
             Dynamic_W = self.parameters_setting['Dynamic_W']
-            print(x)
-            print(y)
-            print(self.virtual_sample)
             Mymodel = Bgolearn.fit(data_matrix=x, Measured_response=y, virtual_samples=self.virtual_sample, opt_num=opt_num, min_search=min_search, Dynamic_W=Dynamic_W)
             if self.parameters_setting['function'] == 'EI':
                 self.resultWindow.show()
