@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>772</width>
+    <width>748</width>
     <height>499</height>
    </rect>
   </property>
@@ -58,7 +58,7 @@
      <rect>
       <x>20</x>
       <y>110</y>
-      <width>731</width>
+      <width>701</width>
       <height>291</height>
      </rect>
     </property>
@@ -439,7 +439,7 @@
      <widget class="QLabel" name="label_2">
       <property name="geometry">
        <rect>
-        <x>520</x>
+        <x>530</x>
         <y>30</y>
         <width>81</width>
         <height>16</height>
@@ -478,9 +478,9 @@
      <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
-        <x>520</x>
+        <x>530</x>
         <y>50</y>
-        <width>175</width>
+        <width>141</width>
         <height>21</height>
        </rect>
       </property>
@@ -488,14 +488,14 @@
        <item>
         <widget class="QRadioButton" name="classification_Dynamic_W_TrueRadioButton">
          <property name="text">
-          <string>minimum</string>
+          <string>True</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QRadioButton" name="classification_Dynamic_W_FalseRadioButton">
          <property name="text">
-          <string>maximum</string>
+          <string>False</string>
          </property>
         </widget>
        </item>
@@ -506,7 +506,7 @@
    <widget class="QPushButton" name="setParametersButton">
     <property name="geometry">
      <rect>
-      <x>600</x>
+      <x>620</x>
       <y>410</y>
       <width>81</width>
       <height>28</height>
@@ -519,7 +519,7 @@
    <widget class="QPushButton" name="resetParametersButton">
     <property name="geometry">
      <rect>
-      <x>490</x>
+      <x>510</x>
       <y>410</y>
       <width>81</width>
       <height>28</height>
@@ -535,7 +535,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>772</width>
+     <width>748</width>
      <height>26</height>
     </rect>
    </property>
