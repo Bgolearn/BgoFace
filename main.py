@@ -5,15 +5,26 @@ import re
 import sys
 import numpy as np
 import pandas as pd
+import seaborn as sns
 import Bgolearn.BGOsampling as BGOS
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog, QMessageBox, QHeaderView, QCheckBox, QVBoxLayout, QWidget
+from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog, QMessageBox, QHeaderView, QCheckBox, QVBoxLayout, \
+    QWidget, QRadioButton, QButtonGroup, QGraphicsScene
 from PyQt5.QtGui import QStandardItemModel, QStandardItem, QPixmap
+from matplotlib import pyplot as plt
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from sklearn.gaussian_process import GaussianProcessRegressor
+from sklearn.gaussian_process.kernels import DotProduct, WhiteKernel, RBF, ConstantKernel
+from sklearn.model_selection import LeaveOneOut
+
 from interface import Ui_MainWindow
 from load import Ui_LoadWindow
 from download import Ui_DownloadWindow
 from parameter import Ui_ParameterWindow
 from result import Ui_ResultWindow
+from show import Ui_ShowWindow
+from export import Ui_ExportWindow
+
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -26,6 +37,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.loadWindow = LoadWindow()
         self.parameterWindow = ParameterWindow()
         self.downloadWindow = DownloadWindow()
+        self.showWindow = ShowWindow()
         self.resultWindow = ResultWindow()
 
         # 函数
@@ -33,6 +45,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.citation1Label.setText('<a href="https://doi.org/10.1016/j.matdes.2024.112921">https://doi.org/10.1016/j.matdes.2024.112921</a>')
         self.citation2Label.setText('<a href="https://doi.org/10.1038/s41524-024-01243-4">https://doi.org/10.1038/s41524-024-01243-4</a>')
         self.loadTrainingSampleButton.clicked.connect(self.open_load_window)
+        self.showButton.clicked.connect(self.open_show_window)
         self.resultButton.clicked.connect(self.open_result_window)
         self.inputVirtualSampleRadioButton.clicked.connect(self.switch_virtual_sample_method)
         self.manualVirtualSampleRadioButton.clicked.connect(self.switch_virtual_sample_method)
@@ -122,7 +135,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # 设置QScrollArea的内容
         self.sampleScrollArea.setWidget(scroll_content)
         self.sampleScrollArea.setWidgetResizable(True)
-
+    def open_show_window(self):
+        self.showWindow.get_training_sample(self.training_sample)
+        self.showWindow.show()
     def open_result_window(self):
         self.resultWindow.show()
     def open_load_window(self):
@@ -244,7 +259,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.selected_sample_data[item]['minimum'] = minimum
         self.selected_sample_data[item]['maximum'] = maximum
         self.selected_sample_data[item]['step'] = step
-        self.selected_sample_data[item]['virtual_sample'] = np.arange(minimum, maximum, step)
+        self.selected_sample_data[item]['virtual_sample'] = np.arange(minimum, maximum+step, step)
         # 获取当前索引
         current_index = self.nameComboBox.currentIndex()
         # 计算下一个索引
@@ -596,6 +611,409 @@ class DownloadWindow(QMainWindow, Ui_DownloadWindow):
             self.close()
         else:
             QMessageBox.warning(self, "Warning", "Please enter the download path of the file！")
+            return
+
+class ShowWindow(QMainWindow, Ui_ShowWindow):
+    def __init__(self):
+        super(ShowWindow, self).__init__()
+        self.setupUi(self)
+        self.setWindowTitle('Show')
+
+        self.exportWindow = ExportWindow()
+
+        # 创建QGraphicsScene
+        self.scene_element = QGraphicsScene(self)
+        self.exportButton.clicked.connect(self.open_export_window)
+        self.trainingSampleGraphicsView.setScene(self.scene_element)
+
+
+        self.buttonGroup = None
+        self.training_sample = {}
+        self.elements = []
+
+    def get_training_sample(self, training_sample):
+        self.training_sample = training_sample
+        if self.training_sample is not None:
+            self.show_training_sample()
+            self.first_element_checked()
+
+    def open_export_window(self):
+        if self.training_sample is None:
+            QMessageBox.warning(self, "Warning", "Please enter training sample first！")
+            return
+        self.exportWindow.get_training_sample(self.training_sample)
+        self.exportWindow.show()
+
+    def show_training_sample(self):
+        scroll_content = QWidget()
+        layout = QVBoxLayout(scroll_content)
+
+        # 定义元素列表
+        self.elements = list(self.training_sample.columns)
+        self.elements.append('Numerical Features')
+        self.elements.append('Contrast')
+
+        self.buttonGroup = QButtonGroup(scroll_content)
+        self.buttonGroup.buttonClicked[int].connect(self.on_radio_button_clicked)
+
+        for index, element in enumerate(self.elements):
+            radioButton = QRadioButton(element)
+            layout.addWidget(radioButton)
+            if index == 0:
+                radioButton.setChecked(True)
+            self.buttonGroup.addButton(radioButton, index)
+
+        # 设置QScrollArea的内容
+        self.showTrainingSampleScrollArea.setWidget(scroll_content)
+        self.showTrainingSampleScrollArea.setWidgetResizable(True)
+
+    def on_radio_button_clicked(self, idx):
+        self.scene_element.clear()
+        self.plot_data(idx)
+
+    def plot_data(self, index):
+        data_features = self.training_sample.iloc[:, :-1]
+        labels = self.training_sample.iloc[:, -1]
+        column = self.elements[index]
+        # 设置绘图风格和字体
+        sns.set(style="ticks", context="paper")
+        # matplotlib.rcParams['font.family'] = ['Arial Unicode MS']  # 设置字体为支持中文
+        plt.rcParams['axes.unicode_minus'] = False  # 解决负号显示问题
+        plt.rcParams['font.size'] = 12  # 设置全局字体大小
+        plt.rcParams['axes.titlesize'] = 18  # 设置标题字体大小
+        plt.rcParams['axes.labelsize'] = 15  # 设置轴标签字体大小
+        plt.rcParams['xtick.labelsize'] = 12  # 设置x轴刻度字体大小
+        plt.rcParams['ytick.labelsize'] = 12  # 设置y轴刻度字体大小
+
+        # 创建一个matplotlib Figure
+        fig, ax = plt.subplots(figsize=(7.5, 4.5))
+
+        if 0 <= index <= len(self.elements) - 4:
+            # 绘制柱状图或直方图
+            if pd.api.types.is_numeric_dtype(data_features[column]):
+                sns.histplot(data=data_features, x=column, kde=True, color='skyblue', bins=30, edgecolor='black', ax=ax)
+                ax.set_title(f"{column} Distribution", fontsize=18)
+                ax.set_xlabel(column, fontsize=15)
+                ax.set_ylabel('Frequency', fontsize=15)
+            else:
+                sns.countplot(data=data_features, x=column, palette="viridis", ax=ax)
+                ax.set_title(f"{column} Count", fontsize=18)
+                ax.set_xlabel(column, fontsize=15)
+                ax.set_ylabel('Count', fontsize=15)
+            ax.tick_params(axis='x', rotation=45, labelsize=12)
+            ax.tick_params(axis='y', labelsize=12)
+            sns.despine(trim=True)
+            plt.tight_layout()
+        elif index == len(self.elements) - 3:
+            # 标签列的统计分析
+            sns.countplot(x=labels, hue=labels, palette="Set2", legend=False, ax=ax)
+            ax.set_title('Distribution of label columns', fontsize=18)
+            ax.set_xlabel('Label', fontsize=15)
+            ax.set_ylabel('Count', fontsize=15)
+            ax.tick_params(axis='x', rotation=45, labelsize=12)
+            ax.tick_params(axis='y', labelsize=12)
+            sns.despine(trim=True)
+            plt.tight_layout()
+        elif index == len(self.elements) - 2:
+            # 绘制箱线图以展示数值列的分布情况
+            numeric_columns = data_features.select_dtypes(include=['float64', 'int64']).columns
+            if len(numeric_columns) > 0:
+                sns.boxplot(data=data_features[numeric_columns], orient='h', palette="vlag", ax=ax)
+                ax.set_title('Boxplots for numerical features', fontsize=18)
+                ax.set_xlabel('Value', fontsize=15)
+                ax.set_ylabel('Feature', fontsize=15)
+                ax.tick_params(axis='x', labelsize=12)
+                ax.tick_params(axis='y', labelsize=12)
+                sns.despine(trim=True)
+                plt.tight_layout()
+        elif index == len(self.elements) - 1:
+            fig = self.pre_scatter()
+
+        # 将matplotlib Figure转换为FigureCanvas
+        canvas = FigureCanvas(fig)
+        self.scene_element.addWidget(canvas)
+
+    def pre_scatter(self):
+        data = self.training_sample
+        X = data.iloc[:, :-1]
+        Y = data.iloc[:, -1]
+
+        X = np.array(X)
+        Y = np.array(Y)
+
+        loo = LeaveOneOut()
+        loo.get_n_splits(X)
+
+        ypre = []
+        yvar = []
+
+        KErnel = RBF() + WhiteKernel()
+        for train_index, test_index in loo.split(X):
+            X_train, X_test = X[train_index], X[test_index]
+            y_train, y_test = Y[train_index], Y[test_index]
+            model = GaussianProcessRegressor(kernel=KErnel, n_restarts_optimizer=10, alpha=0, normalize_y=True,
+                                             random_state=0).fit(X_train, y_train)
+            y_pre, y_var = model.predict(X_test, return_std=True)
+            ypre.append(y_pre[0])
+            yvar.append(y_var[0])
+        y = Y
+        ypre = np.array(ypre)
+        plt.rcParams.update({
+            'font.size': 16,
+            'axes.labelsize': 20,
+            'axes.titlesize': 24,
+            'legend.fontsize': 16,
+            'xtick.labelsize': 16,
+            'ytick.labelsize': 16,
+            'axes.linewidth': 2,
+            'xtick.major.size': 8,
+            'ytick.major.size': 8,
+            'xtick.major.width': 2,
+            'ytick.major.width': 2,
+            'lines.linewidth': 2.5,
+            'lines.markersize': 10,
+            'axes.grid': True,
+            'grid.alpha': 0.8,
+            'grid.linestyle': '--',
+            'grid.linewidth': 1,
+            'figure.figsize': (12, 12)
+        })
+        fig, ax = plt.subplots(figsize=(4.7, 4.7))
+        sns.set(style="whitegrid")
+
+        ax.scatter(y, ypre, marker='o', s=150, edgecolor='k', color='#1f77b4', alpha=0.8)
+
+        gap = (y.max() - y.min()) * 0.05
+        ax.plot([y.min() - gap, y.max() + gap], [y.min() - gap, y.max() + gap], '--', color='k', linewidth=2.5)
+
+        ax.set_title('Model Predictions vs True Values', fontsize=18)
+        ax.set_xlabel('True Values', fontsize=14)
+        ax.set_ylabel('Predicted Values', fontsize=14)
+
+        ax.text(0.05, 0.95, 'Correlation Coefficient: {:.2f}'.format(np.corrcoef(y, ypre)[0, 1]), fontsize=12,
+                color='black', transform=ax.transAxes)
+        ax.text(0.05, 0.9, 'RMSE: {:.2f}'.format(np.sqrt(np.mean((y - ypre) ** 2))), fontsize=12, color='black',
+                transform=ax.transAxes)
+
+        ax.set_xlim(y.min() - gap, y.max() + gap)
+        ax.set_ylim(y.min() - gap, y.max() + gap)
+        ax.set_aspect('equal', adjustable='box')
+
+        fig.tight_layout()
+        return fig
+    def first_element_checked(self):
+        self.buttonGroup.button(0).setChecked(True)
+        self.scene_element.clear()
+
+        data_features = self.training_sample.iloc[:, :-1]
+        column = self.elements[0]
+        # 设置绘图风格和字体
+        sns.set(style="ticks", context="paper")
+        plt.rcParams['axes.unicode_minus'] = False  # 解决负号显示问题
+        plt.rcParams['font.size'] = 12  # 设置全局字体大小
+        plt.rcParams['axes.titlesize'] = 18  # 设置标题字体大小
+        plt.rcParams['axes.labelsize'] = 15  # 设置轴标签字体大小
+        plt.rcParams['xtick.labelsize'] = 12  # 设置x轴刻度字体大小
+        plt.rcParams['ytick.labelsize'] = 12  # 设置y轴刻度字体大小
+
+        # 创建一个matplotlib Figure
+        fig, ax = plt.subplots(figsize=(7.5, 4.5))
+
+        # 绘制柱状图或直方图
+        if pd.api.types.is_numeric_dtype(data_features[column]):
+            sns.histplot(data=data_features, x=column, kde=True, color='skyblue', bins=30, edgecolor='black', ax=ax)
+            ax.set_title(f"{column} Distribution", fontsize=18)
+            ax.set_xlabel(column, fontsize=15)
+            ax.set_ylabel('Frequency', fontsize=15)
+        else:
+            sns.countplot(data=data_features, x=column, palette="viridis", ax=ax)
+            ax.set_title(f"{column} Count", fontsize=18)
+            ax.set_xlabel(column, fontsize=15)
+            ax.set_ylabel('Count', fontsize=15)
+        ax.tick_params(axis='x', rotation=45, labelsize=12)
+        ax.tick_params(axis='y', labelsize=12)
+        sns.despine(trim=True)
+        plt.tight_layout()
+        # 将matplotlib Figure转换为FigureCanvas
+        canvas = FigureCanvas(fig)
+        self.scene_element.addWidget(canvas)
+
+class ExportWindow(QMainWindow, Ui_ExportWindow):
+    def __init__(self):
+        super(ExportWindow, self).__init__()
+        self.setupUi(self)
+        self.setWindowTitle('Export')
+
+        self.browseExportTrainingSampleFileButton.clicked.connect(self.browse_export_path)
+        self.okExportButton.clicked.connect(self.export)
+        self.cancelExportButton.clicked.connect(self.close)
+
+        self.training_sample = None
+        self.export_training_sample_path = None
+    def browse_export_path(self):
+        options = QFileDialog.Options()
+        # 获取文件夹路径
+        self.export_training_sample_path = QFileDialog.getExistingDirectory(self, "选择保存图片文件的文件夹", options=options)
+        if self.export_training_sample_path:
+            self.exportTrainingSamplePath.setText(self.export_training_sample_path)
+    def get_training_sample(self, training_sample):
+        self.training_sample = training_sample
+
+    def pre_scatter(self):
+        data = self.training_sample
+        X = data.iloc[:, :-1]
+        Y = data.iloc[:, -1]
+
+        X = np.array(X)
+        Y = np.array(Y)
+
+        loo = LeaveOneOut()
+        loo.get_n_splits(X)
+
+        ypre = []
+        yvar = []
+
+        KErnel = RBF() + WhiteKernel()
+        for train_index, test_index in loo.split(X):
+            X_train, X_test = X[train_index], X[test_index]
+            y_train, y_test = Y[train_index], Y[test_index]
+            model = GaussianProcessRegressor(kernel=KErnel, n_restarts_optimizer=10, alpha=0, normalize_y=True,
+                                             random_state=0).fit(X_train, y_train)
+            y_pre, y_var = model.predict(X_test, return_std=True)
+            ypre.append(y_pre[0])
+            yvar.append(y_var[0])
+        y = Y
+        ypre = np.array(ypre)
+
+        plt.rcParams.update({
+            'font.size': 16,
+            'axes.labelsize': 20,
+            'axes.titlesize': 24,
+            'legend.fontsize': 16,
+            'xtick.labelsize': 16,
+            'ytick.labelsize': 16,
+            'axes.linewidth': 2,
+            'xtick.major.size': 8,
+            'ytick.major.size': 8,
+            'xtick.major.width': 2,
+            'ytick.major.width': 2,
+            'lines.linewidth': 2.5,
+            'lines.markersize': 10,
+            'axes.grid': True,
+            'grid.alpha': 0.8,
+            'grid.linestyle': '--',
+            'grid.linewidth': 1,
+            'figure.figsize': (12, 12)
+        })
+        fig, ax = plt.subplots(figsize=(8, 8))
+
+
+        sns.set(style="whitegrid")
+
+        ax.scatter(y, ypre, marker='o', s=150, edgecolor='k', color='#1f77b4', alpha=0.8)
+
+        gap = (y.max() - y.min()) * 0.05
+        ax.plot([y.min() - gap, y.max() + gap], [y.min() - gap, y.max() + gap], '--', color='k', linewidth=2.5)
+
+        ax.set_title('Model Predictions vs True Values', fontsize=24)
+        ax.set_xlabel('True Values', fontsize=18)
+        ax.set_ylabel('Predicted Values', fontsize=18)
+
+        ax.text(0.05, 0.95, 'Correlation Coefficient: {:.2f}'.format(np.corrcoef(y, ypre)[0, 1]), fontsize=18,
+                color='black', transform=ax.transAxes)
+        ax.text(0.05, 0.9, 'RMSE: {:.2f}'.format(np.sqrt(np.mean((y - ypre) ** 2))), fontsize=18, color='black',
+                transform=ax.transAxes)
+
+        ax.set_xlim(y.min() - gap, y.max() + gap)
+        ax.set_ylim(y.min() - gap, y.max() + gap)
+        ax.set_aspect('equal', adjustable='box')
+
+        fig.tight_layout()
+        return fig
+
+    def export(self):
+        if self.export_training_sample_path is not None:
+            if self.training_sample is None:
+                QMessageBox.warning(self, "Warning", "Please enter the training sample file！")
+                return
+            # 得到数据
+            data_features = self.training_sample.iloc[:, :-1]
+            labels = self.training_sample.iloc[:, -1]
+            save_dir = self.export_training_sample_path
+            # 设置绘图风格和字体
+            sns.set(style="ticks", context="paper")
+            # matplotlib.rcParams['font.family'] = ['Arial Unicode MS']  # 设置字体为支持中文
+            plt.rcParams['axes.unicode_minus'] = False  # 解决负号显示问题
+            plt.rcParams['font.size'] = 12  # 设置全局字体大小
+            plt.rcParams['axes.titlesize'] = 18  # 设置标题字体大小
+            plt.rcParams['axes.labelsize'] = 15  # 设置轴标签字体大小
+            plt.rcParams['xtick.labelsize'] = 12  # 设置x轴刻度字体大小
+            plt.rcParams['ytick.labelsize'] = 12  # 设置y轴刻度字体大小
+
+            # 对每一列进行统计分析并绘制图表
+            name = 1
+            for column in data_features.columns:
+                fig, ax = plt.subplots(figsize=(10, 6))
+                # 绘制柱状图或直方图
+                if pd.api.types.is_numeric_dtype(data_features[column]):
+                    sns.histplot(data=data_features, x=column, kde=True, color='skyblue', bins=30, edgecolor='black',
+                                 ax=ax)
+                    ax.set_title(f"{column} Distribution", fontsize=18)
+                    ax.set_xlabel(column, fontsize=15)
+                    ax.set_ylabel('Frequency', fontsize=15)
+                else:
+                    sns.countplot(data=data_features, x=column, palette="viridis", ax=ax)
+                    ax.set_title(f"{column} Count", fontsize=18)
+                    ax.set_xlabel(column, fontsize=15)
+                    ax.set_ylabel('Count', fontsize=15)
+                ax.tick_params(axis='x', rotation=45, labelsize=12)
+                ax.tick_params(axis='y', labelsize=12)
+                sns.despine(trim=True)
+                plt.tight_layout()
+                # 保存图表到文件
+                try:
+                    fig.savefig(os.path.join(save_dir, f"{column}_analysis.png"))
+                except:
+                    # 防止部分特征命名不规范导致保存错误，命名为备选数字
+                    fig.savefig(os.path.join(save_dir, f"{name}_analysis.png"))
+                    name += 1
+                plt.close(fig)
+            # 标签列的统计分析
+            fig, ax = plt.subplots(figsize=(10, 6))
+            sns.countplot(x=labels, hue=labels, palette="Set2", legend=False, ax=ax)
+            ax.set_title('Distribution of label columns', fontsize=18)
+            ax.set_xlabel('Label', fontsize=15)
+            ax.set_ylabel('Count', fontsize=15)
+            ax.tick_params(axis='x', rotation=45, labelsize=12)
+            ax.tick_params(axis='y', labelsize=12)
+            sns.despine(trim=True)
+            plt.tight_layout()
+            fig.savefig(os.path.join(save_dir, "label_distribution.png"))
+            plt.close(fig)
+            # 绘制箱线图以展示数值列的分布情况
+            numeric_columns = data_features.select_dtypes(include=['float64', 'int64']).columns
+            if len(numeric_columns) > 0:
+                fig, ax = plt.subplots(figsize=(10, 8))
+                sns.boxplot(data=data_features[numeric_columns], orient='h', palette="vlag", ax=ax)
+                ax.set_title('Boxplots for numerical features', fontsize=18)
+                ax.set_xlabel('Value', fontsize=15)
+                ax.set_ylabel('Feature', fontsize=15)
+                ax.tick_params(axis='x', labelsize=12)
+                ax.tick_params(axis='y', labelsize=12)
+                sns.despine(trim=True)
+                plt.tight_layout()
+                fig.savefig(os.path.join(save_dir, "label_distribution.png"))
+                plt.close(fig)
+
+            # contrast
+            fig = self.pre_scatter()
+            fig.savefig(os.path.join(save_dir, "contrast.png"), dpi=500, bbox_inches='tight')
+            plt.close(fig)
+
+            self.statusBar().showMessage("Export successfully！", 1000)
+            self.close()
+        else:
+            QMessageBox.warning(self, "Warning", "Please enter the export path！")
             return
 
 class ResultWindow(QMainWindow, Ui_ResultWindow):
