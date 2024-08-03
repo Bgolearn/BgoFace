@@ -7,8 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>1359</width>
-    <height>844</height>
+    <height>971</height>
    </rect>
+  </property>
+  <property name="font">
+   <font>
+    <family>Microsoft YaHei</family>
+    <pointsize>10</pointsize>
+   </font>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
@@ -18,10 +24,16 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>300</y>
-      <width>93</width>
+      <y>280</y>
+      <width>101</width>
       <height>28</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei</family>
+      <pointsize>10</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>Fit</string>
@@ -31,10 +43,16 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>260</y>
-      <width>93</width>
+      <y>240</y>
+      <width>101</width>
       <height>28</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei</family>
+      <pointsize>10</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>Load Data</string>
@@ -44,20 +62,32 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>370</y>
+      <y>350</y>
       <width>641</width>
       <height>351</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei</family>
+      <pointsize>10</pointsize>
+     </font>
     </property>
    </widget>
    <widget class="QGroupBox" name="virtualSampleModuleGroupBox">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>150</y>
+      <y>130</y>
       <width>251</width>
-      <height>91</height>
+      <height>101</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei</family>
+      <pointsize>10</pointsize>
+     </font>
     </property>
     <property name="title">
      <string>Virtual Sample</string>
@@ -68,12 +98,24 @@
        <x>10</x>
        <y>30</y>
        <width>141</width>
-       <height>51</height>
+       <height>63</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Microsoft YaHei</family>
+       <pointsize>10</pointsize>
+      </font>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
        <widget class="QRadioButton" name="inputVirtualSampleRadioButton">
+        <property name="font">
+         <font>
+          <family>Microsoft YaHei</family>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>Input</string>
         </property>
@@ -81,6 +123,12 @@
       </item>
       <item>
        <widget class="QRadioButton" name="manualVirtualSampleRadioButton">
+        <property name="font">
+         <font>
+          <family>Microsoft YaHei</family>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>Manual</string>
         </property>
@@ -93,20 +141,32 @@
     <property name="geometry">
      <rect>
       <x>690</x>
-      <y>370</y>
+      <y>350</y>
       <width>641</width>
       <height>351</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei</family>
+      <pointsize>10</pointsize>
+     </font>
     </property>
    </widget>
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>350</y>
+      <y>325</y>
       <width>141</width>
-      <height>16</height>
+      <height>21</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei</family>
+      <pointsize>10</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>Training Sample:</string>
@@ -116,10 +176,16 @@
     <property name="geometry">
      <rect>
       <x>690</x>
-      <y>350</y>
-      <width>121</width>
-      <height>16</height>
+      <y>325</y>
+      <width>141</width>
+      <height>21</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei</family>
+      <pointsize>10</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>Virtual Sample:</string>
@@ -129,19 +195,31 @@
     <property name="geometry">
      <rect>
       <x>690</x>
-      <y>150</y>
+      <y>130</y>
       <width>641</width>
       <height>191</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei</family>
+      <pointsize>10</pointsize>
+     </font>
     </property>
     <widget class="QLabel" name="label_3">
      <property name="geometry">
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>181</width>
-       <height>16</height>
+       <width>201</width>
+       <height>31</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Microsoft YaHei</family>
+       <pointsize>10</pointsize>
+      </font>
      </property>
      <property name="text">
       <string>Manual Virtual Sample:</string>
@@ -151,10 +229,16 @@
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>30</y>
+       <y>40</y>
        <width>72</width>
        <height>15</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Microsoft YaHei</family>
+       <pointsize>10</pointsize>
+      </font>
      </property>
      <property name="text">
       <string>Name:</string>
@@ -164,10 +248,16 @@
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>50</y>
+       <y>60</y>
        <width>91</width>
        <height>22</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Microsoft YaHei</family>
+       <pointsize>10</pointsize>
+      </font>
      </property>
     </widget>
     <widget class="QLabel" name="label_5">
@@ -175,9 +265,15 @@
       <rect>
        <x>0</x>
        <y>90</y>
-       <width>72</width>
-       <height>15</height>
+       <width>91</width>
+       <height>16</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Microsoft YaHei</family>
+       <pointsize>10</pointsize>
+      </font>
      </property>
      <property name="text">
       <string>Minimum:</string>
@@ -188,9 +284,15 @@
       <rect>
        <x>170</x>
        <y>90</y>
-       <width>72</width>
-       <height>15</height>
+       <width>91</width>
+       <height>16</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Microsoft YaHei</family>
+       <pointsize>10</pointsize>
+      </font>
      </property>
      <property name="text">
       <string>Maximum:</string>
@@ -200,10 +302,16 @@
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>140</y>
+       <y>130</y>
        <width>72</width>
-       <height>15</height>
+       <height>31</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Microsoft YaHei</family>
+       <pointsize>10</pointsize>
+      </font>
      </property>
      <property name="text">
       <string>Step:</string>
@@ -218,6 +326,12 @@
        <height>22</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <family>Microsoft YaHei</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
      <property name="decimals">
       <number>3</number>
      </property>
@@ -228,11 +342,17 @@
     <widget class="QPushButton" name="okButton">
      <property name="geometry">
       <rect>
-       <x>170</x>
+       <x>180</x>
        <y>160</y>
        <width>71</width>
        <height>22</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Microsoft YaHei</family>
+       <pointsize>10</pointsize>
+      </font>
      </property>
      <property name="text">
       <string>OK</string>
@@ -246,6 +366,12 @@
        <width>91</width>
        <height>22</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Microsoft YaHei</family>
+       <pointsize>10</pointsize>
+      </font>
      </property>
      <property name="decimals">
       <number>3</number>
@@ -266,6 +392,12 @@
        <height>22</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <family>Microsoft YaHei</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
      <property name="decimals">
       <number>3</number>
      </property>
@@ -279,11 +411,17 @@
     <widget class="QPushButton" name="downloadVirtualSampleButton">
      <property name="geometry">
       <rect>
-       <x>542</x>
+       <x>532</x>
        <y>160</y>
-       <width>91</width>
+       <width>101</width>
        <height>28</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Microsoft YaHei</family>
+       <pointsize>10</pointsize>
+      </font>
      </property>
      <property name="text">
       <string>Download</string>
@@ -294,19 +432,31 @@
     <property name="geometry">
      <rect>
       <x>300</x>
-      <y>150</y>
+      <y>130</y>
       <width>361</width>
       <height>191</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei</family>
+      <pointsize>10</pointsize>
+     </font>
     </property>
     <widget class="QScrollArea" name="sampleScrollArea">
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>20</y>
+       <y>30</y>
        <width>361</width>
-       <height>171</height>
+       <height>161</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Microsoft YaHei</family>
+       <pointsize>10</pointsize>
+      </font>
      </property>
      <property name="widgetResizable">
       <bool>true</bool>
@@ -317,7 +467,7 @@
         <x>0</x>
         <y>0</y>
         <width>359</width>
-        <height>169</height>
+        <height>159</height>
        </rect>
       </property>
      </widget>
@@ -328,22 +478,34 @@
        <x>0</x>
        <y>0</y>
        <width>72</width>
-       <height>15</height>
+       <height>31</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Microsoft YaHei</family>
+       <pointsize>10</pointsize>
+      </font>
      </property>
      <property name="text">
       <string>Samples:</string>
      </property>
     </widget>
    </widget>
-   <widget class="QLabel" name="logoLabel">
+   <widget class="QLabel" name="HKUSTGZLabel">
     <property name="geometry">
      <rect>
       <x>20</x>
       <y>10</y>
-      <width>1311</width>
+      <width>77</width>
       <height>115</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei</family>
+      <pointsize>10</pointsize>
+     </font>
     </property>
     <property name="text">
      <string/>
@@ -353,10 +515,16 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>730</y>
-      <width>71</width>
+      <y>710</y>
+      <width>91</width>
       <height>16</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei</family>
+      <pointsize>10</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>Citation: </string>
@@ -366,10 +534,16 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>750</y>
-      <width>161</width>
-      <height>16</height>
+      <y>730</y>
+      <width>171</width>
+      <height>21</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei</family>
+      <pointsize>10</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>Materials &amp; Design : </string>
@@ -379,10 +553,16 @@
     <property name="geometry">
      <rect>
       <x>190</x>
-      <y>750</y>
-      <width>351</width>
-      <height>16</height>
+      <y>730</y>
+      <width>511</width>
+      <height>21</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei</family>
+      <pointsize>10</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>https://doi.org/10.1016/j.matdes.2024.112921</string>
@@ -392,10 +572,16 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>770</y>
-      <width>231</width>
-      <height>16</height>
+      <y>750</y>
+      <width>251</width>
+      <height>21</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei</family>
+      <pointsize>10</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>NPJ Computational Materials :</string>
@@ -404,11 +590,17 @@
    <widget class="QLabel" name="citation2Label">
     <property name="geometry">
      <rect>
-      <x>260</x>
-      <y>770</y>
-      <width>341</width>
-      <height>16</height>
+      <x>270</x>
+      <y>750</y>
+      <width>461</width>
+      <height>21</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei</family>
+      <pointsize>10</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>https://doi.org/10.1038/s41524-024-01243-4</string>
@@ -418,10 +610,16 @@
     <property name="geometry">
      <rect>
       <x>160</x>
-      <y>300</y>
-      <width>93</width>
+      <y>280</y>
+      <width>101</width>
       <height>28</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei</family>
+      <pointsize>10</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>Result</string>
@@ -431,13 +629,152 @@
     <property name="geometry">
      <rect>
       <x>160</x>
-      <y>260</y>
-      <width>93</width>
+      <y>240</y>
+      <width>101</width>
       <height>28</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
     <property name="text">
      <string>Plot</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="BgoLearnLabel">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>10</y>
+      <width>221</width>
+      <height>115</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_11">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>784</y>
+      <width>171</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Cooperate partners:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="BUCTLabel">
+    <property name="geometry">
+     <rect>
+      <x>21</x>
+      <y>810</y>
+      <width>90</width>
+      <height>90</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="NEULabel">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>810</y>
+      <width>90</width>
+      <height>90</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="SHULabel">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>810</y>
+      <width>90</width>
+      <height>90</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="TJULabel">
+    <property name="geometry">
+     <rect>
+      <x>540</x>
+      <y>810</y>
+      <width>90</width>
+      <height>90</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="ZJLabLabel">
+    <property name="geometry">
+     <rect>
+      <x>740</x>
+      <y>810</y>
+      <width>90</width>
+      <height>90</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string/>
     </property>
    </widget>
   </widget>
@@ -447,7 +784,7 @@
      <x>0</x>
      <y>0</y>
      <width>1359</width>
-     <height>26</height>
+     <height>29</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuSetting">
@@ -462,6 +799,11 @@
   <action name="actionParameter">
    <property name="text">
     <string>Parameter</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
    </property>
   </action>
   <action name="actionExport">

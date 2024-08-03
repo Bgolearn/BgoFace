@@ -10,6 +10,12 @@
     <height>517</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>Microsoft YaHei</family>
+    <pointsize>10</pointsize>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
@@ -23,6 +29,12 @@
       <height>15</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
     <property name="text">
      <string>Result:</string>
     </property>
@@ -35,6 +47,12 @@
       <width>841</width>
       <height>461</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei</family>
+      <pointsize>10</pointsize>
+     </font>
     </property>
    </widget>
   </widget>

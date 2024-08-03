@@ -10,6 +10,12 @@
     <height>516</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>Microsoft YaHei</family>
+    <pointsize>10</pointsize>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
@@ -32,6 +38,12 @@
        <height>16</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <family>Microsoft YaHei</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>Selection:</string>
      </property>
@@ -44,6 +56,12 @@
        <width>301</width>
        <height>141</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Microsoft YaHei</family>
+       <pointsize>10</pointsize>
+      </font>
      </property>
      <property name="widgetResizable">
       <bool>true</bool>
@@ -78,6 +96,12 @@
       <width>93</width>
       <height>28</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei</family>
+      <pointsize>10</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>Export</string>

@@ -7,9 +7,9 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import Bgolearn.BGOsampling as BGOS
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog, QMessageBox, QHeaderView, QCheckBox, QVBoxLayout, \
-    QWidget, QRadioButton, QButtonGroup, QGraphicsScene
+    QWidget, QRadioButton, QButtonGroup, QGraphicsScene, QHBoxLayout
 from PyQt5.QtGui import QStandardItemModel, QStandardItem, QPixmap
 from matplotlib import pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
@@ -78,10 +78,46 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
 
     def load_image(self):
-        file_path = 'logo.jpg'
+        file_path = self.resource_path('Images/HKUSTGZ.png')
         pixmap = QPixmap(file_path)
-        scaled_pixmap = pixmap.scaled(self.logoLabel.size(), aspectRatioMode=True)
-        self.logoLabel.setPixmap(scaled_pixmap)
+        scaled_pixmap = pixmap.scaled(self.HKUSTGZLabel.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        self.HKUSTGZLabel.setPixmap(scaled_pixmap)
+        file_path = self.resource_path('Images/BgoLearn.png')
+        pixmap = QPixmap(file_path)
+        scaled_pixmap = pixmap.scaled(self.BgoLearnLabel.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        self.BgoLearnLabel.setPixmap(scaled_pixmap)
+        file_path = self.resource_path('Images/BUCT.png')
+        pixmap = QPixmap(file_path)
+        scaled_pixmap = pixmap.scaled(self.BUCTLabel.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        self.BUCTLabel.setPixmap(scaled_pixmap)
+        file_path = self.resource_path('Images/NEU.png')
+        pixmap = QPixmap(file_path)
+        scaled_pixmap = pixmap.scaled(self.NEULabel.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        self.NEULabel.setPixmap(scaled_pixmap)
+        file_path = self.resource_path('Images/SHU.png')
+        pixmap = QPixmap(file_path)
+        scaled_pixmap = pixmap.scaled(self.SHULabel.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        self.SHULabel.setPixmap(scaled_pixmap)
+        file_path = self.resource_path('Images/TJU.png')
+        pixmap = QPixmap(file_path)
+        scaled_pixmap = pixmap.scaled(self.TJULabel.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        self.TJULabel.setPixmap(scaled_pixmap)
+        file_path = self.resource_path('Images/ZJLab.png')
+        pixmap = QPixmap(file_path)
+        scaled_pixmap = pixmap.scaled(self.ZJLabLabel.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        self.ZJLabLabel.setPixmap(scaled_pixmap)
+
+
+    def resource_path(self, relative_path):
+        """ 获取资源文件的绝对路径 """
+        try:
+            # PyInstaller创建临时文件夹，并把路径存储在_MEIPASS中
+            base_path = sys._MEIPASS
+        except Exception:
+            base_path = os.path.abspath(".")
+
+        return os.path.join(base_path, relative_path)
+
     def on_checkbox_state_changed(self, state):
         sender = self.sender()  # 获取发出信号的QCheckBox
         element = sender.text()

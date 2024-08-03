@@ -7,8 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>243</height>
+    <height>244</height>
    </rect>
+  </property>
+  <property name="font">
+   <font>
+    <family>Microsoft YaHei</family>
+    <pointsize>10</pointsize>
+   </font>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
@@ -20,12 +26,18 @@
       <x>20</x>
       <y>40</y>
       <width>751</width>
-      <height>30</height>
+      <height>34</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="1,0">
      <item>
       <widget class="QLabel" name="trainingSampleFileName">
+       <property name="font">
+        <font>
+         <family>Microsoft YaHei</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
        <property name="text">
         <string/>
        </property>
@@ -33,6 +45,12 @@
      </item>
      <item>
       <widget class="QPushButton" name="browseTrainingSampleButton">
+       <property name="font">
+        <font>
+         <family>Microsoft YaHei</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
        <property name="text">
         <string>Browse</string>
        </property>
@@ -44,10 +62,16 @@
     <property name="geometry">
      <rect>
       <x>21</x>
-      <y>18</y>
+      <y>13</y>
       <width>192</width>
-      <height>16</height>
+      <height>21</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei</family>
+      <pointsize>10</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>Training Sample File:</string>
@@ -59,12 +83,18 @@
       <x>580</x>
       <y>180</y>
       <width>195</width>
-      <height>30</height>
+      <height>34</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
       <widget class="QPushButton" name="loadButton">
+       <property name="font">
+        <font>
+         <family>Microsoft YaHei</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
        <property name="text">
         <string>Load</string>
        </property>
@@ -72,6 +102,12 @@
      </item>
      <item>
       <widget class="QPushButton" name="cancelButton">
+       <property name="font">
+        <font>
+         <family>Microsoft YaHei</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
        <property name="text">
         <string>Cancel</string>
        </property>
@@ -83,14 +119,20 @@
     <property name="geometry">
      <rect>
       <x>19</x>
-      <y>112</y>
+      <y>117</y>
       <width>751</width>
-      <height>30</height>
+      <height>34</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout_8" stretch="1,0">
      <item>
       <widget class="QLabel" name="virtualSampleFileName">
+       <property name="font">
+        <font>
+         <family>Microsoft YaHei</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
        <property name="text">
         <string/>
        </property>
@@ -98,6 +140,12 @@
      </item>
      <item>
       <widget class="QPushButton" name="browseVirtualSampleButton">
+       <property name="font">
+        <font>
+         <family>Microsoft YaHei</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
        <property name="text">
         <string>Browse</string>
        </property>
@@ -111,8 +159,14 @@
       <x>20</x>
       <y>90</y>
       <width>192</width>
-      <height>16</height>
+      <height>21</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei</family>
+      <pointsize>10</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>Virtual Sample File:</string>
