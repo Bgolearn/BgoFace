@@ -45,7 +45,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.citation1Label.setText('<a href="https://doi.org/10.1016/j.matdes.2024.112921">https://doi.org/10.1016/j.matdes.2024.112921</a>')
         self.citation2Label.setText('<a href="https://doi.org/10.1038/s41524-024-01243-4">https://doi.org/10.1038/s41524-024-01243-4</a>')
         self.loadTrainingSampleButton.clicked.connect(self.open_load_window)
-        self.showButton.clicked.connect(self.open_show_window)
+        self.plotButton.clicked.connect(self.open_show_window)
         self.resultButton.clicked.connect(self.open_result_window)
         self.inputVirtualSampleRadioButton.clicked.connect(self.switch_virtual_sample_method)
         self.manualVirtualSampleRadioButton.clicked.connect(self.switch_virtual_sample_method)
@@ -651,7 +651,7 @@ class ShowWindow(QMainWindow, Ui_ShowWindow):
         # 定义元素列表
         self.elements = list(self.training_sample.columns)
         self.elements.append('Numerical Features')
-        self.elements.append('Contrast')
+        self.elements.append('Pred v.s. Label (waiting)')
 
         self.buttonGroup = QButtonGroup(scroll_content)
         self.buttonGroup.buttonClicked[int].connect(self.on_radio_button_clicked)

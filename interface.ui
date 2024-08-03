@@ -427,7 +427,7 @@
      <string>Result</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="showButton">
+   <widget class="QPushButton" name="plotButton">
     <property name="geometry">
      <rect>
       <x>160</x>
@@ -437,7 +437,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Show</string>
+     <string>Plot</string>
     </property>
    </widget>
   </widget>

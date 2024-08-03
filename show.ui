@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1064</width>
+    <width>1132</width>
     <height>516</height>
    </rect>
   </property>
@@ -19,7 +19,7 @@
      <rect>
       <x>10</x>
       <y>20</y>
-      <width>231</width>
+      <width>301</width>
       <height>161</height>
      </rect>
     </property>
@@ -41,7 +41,7 @@
       <rect>
        <x>0</x>
        <y>20</y>
-       <width>231</width>
+       <width>301</width>
        <height>141</height>
       </rect>
      </property>
@@ -53,7 +53,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>229</width>
+        <width>299</width>
         <height>139</height>
        </rect>
       </property>
@@ -63,7 +63,7 @@
    <widget class="QGraphicsView" name="trainingSampleGraphicsView">
     <property name="geometry">
      <rect>
-      <x>250</x>
+      <x>320</x>
       <y>20</y>
       <width>801</width>
       <height>481</height>
