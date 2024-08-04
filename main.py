@@ -208,13 +208,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def process_uploaded_files(self, file_contents):
         if 'training_sample' in file_contents:
             self.training_sample = file_contents['training_sample']['training_sample_file']
-            if file_contents['training_sample']['training_sample_file_extension'] in ['xls', 'xlsx']:
+            if file_contents['training_sample']['training_sample_file_extension'] in ['xls', 'xlsx', 'csv']:
                 self.display_excel_content(self.training_sample, self.trainingSampleTableView)
                 self.get_training_sample_data(self.training_sample)
 
         if 'virtual_sample' in file_contents:
             self.virtual_sample = file_contents['virtual_sample']['virtual_sample_file']
-            if file_contents['virtual_sample']['virtual_sample_file_extension'] in ['xls', 'xlsx']:
+            if file_contents['virtual_sample']['virtual_sample_file_extension'] in ['xls', 'xlsx', 'csv']:
                 self.display_excel_content(self.virtual_sample, self.virtualSampleTableView)
         else:
             self.virtual_sample = None
@@ -546,7 +546,7 @@ class LoadWindow(QMainWindow, Ui_LoadWindow):
     def upload_training_sample_file(self):
         options = QFileDialog.Options()
         file_path, _ = QFileDialog.getOpenFileName(self, "选择文件", "",
-                                                   "All Files (*);;Text Files (*.txt);;Excel Files (*.xls *.xlsx)",
+                                                   "All Files (*);;Text Files (*.txt);;Excel Files (*.xls *.xlsx *.csv)",
                                                    options=options)
         if file_path:
             # 显示文件路径
@@ -560,6 +560,9 @@ class LoadWindow(QMainWindow, Ui_LoadWindow):
                 elif file_extension in ['xls', 'xlsx']:
                     df = pd.read_excel(file_path)
                     self.training_sample_file = df
+                elif file_extension == 'csv':
+                    df = pd.read_csv(file_path)
+                    self.training_sample_file = df
                 # 上传成功后可以给用户提示
                 self.statusBar().showMessage('File uploaded successfully！', 3000)
             except Exception as e:
@@ -568,7 +571,7 @@ class LoadWindow(QMainWindow, Ui_LoadWindow):
     def upload_virtual_sample_file(self):
         options = QFileDialog.Options()
         file_path, _ = QFileDialog.getOpenFileName(self, "选择文件", "",
-                                                   "All Files (*);;Text Files (*.txt);;Excel Files (*.xls *.xlsx)",
+                                                   "All Files (*);;Text Files (*.txt);;Excel Files (*.xls *.xlsx *.csv)",
                                                    options=options)
         if file_path:
             # 显示文件路径
@@ -581,6 +584,9 @@ class LoadWindow(QMainWindow, Ui_LoadWindow):
                         self.virtual_sample_file = file.read()
                 elif file_extension in ['xls', 'xlsx']:
                     df = pd.read_excel(file_path)
+                    self.virtual_sample_file = df
+                elif file_extension == 'csv':
+                    df = pd.read_csv(file_path)
                     self.virtual_sample_file = df
                 # 上传成功后可以给用户提示
                 self.statusBar().showMessage('File uploaded successfully！', 3000)
