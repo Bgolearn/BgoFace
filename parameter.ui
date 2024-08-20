@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>785</width>
-    <height>569</height>
+    <width>905</width>
+    <height>603</height>
    </rect>
   </property>
   <property name="font">
@@ -70,8 +70,8 @@
      <rect>
       <x>20</x>
       <y>130</y>
-      <width>751</width>
-      <height>331</height>
+      <width>871</width>
+      <height>371</height>
      </rect>
     </property>
     <property name="font">
@@ -247,10 +247,10 @@
      <widget class="QLabel" name="label_4">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>34</y>
-        <width>81</width>
-        <height>21</height>
+        <x>11</x>
+        <y>32</y>
+        <width>76</width>
+        <height>23</height>
        </rect>
       </property>
       <property name="text">
@@ -276,33 +276,20 @@
      <widget class="QLabel" name="label_5">
       <property name="geometry">
        <rect>
-        <x>130</x>
-        <y>35</y>
-        <width>91</width>
-        <height>21</height>
+        <x>110</x>
+        <y>32</y>
+        <width>56</width>
+        <height>23</height>
        </rect>
       </property>
       <property name="text">
        <string>search:</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_6">
-      <property name="geometry">
-       <rect>
-        <x>390</x>
-        <y>35</y>
-        <width>111</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Dynamic_W:</string>
-      </property>
-     </widget>
      <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
-        <x>390</x>
+        <x>360</x>
         <y>60</y>
         <width>140</width>
         <height>29</height>
@@ -328,7 +315,7 @@
      <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
-        <x>130</x>
+        <x>110</x>
         <y>60</y>
         <width>222</width>
         <height>29</height>
@@ -350,6 +337,84 @@
         </widget>
        </item>
       </layout>
+     </widget>
+     <widget class="QWidget" name="layoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>530</x>
+        <y>60</y>
+        <width>325</width>
+        <height>29</height>
+       </rect>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <widget class="QRadioButton" name="regression_Kriging_model_Random_Forest_RadioButton">
+         <property name="text">
+          <string>Random Forest</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QRadioButton" name="regression_Kriging_model_Gaussian_Process_RadioButton">
+         <property name="text">
+          <string>Gaussian Process</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>300</y>
+        <width>701</width>
+        <height>34</height>
+       </rect>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_6">
+       <item>
+        <widget class="QPushButton" name="showRegressionContrastButton">
+         <property name="text">
+          <string>Pred v.s. Label</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_10">
+         <property name="text">
+          <string>Loading this image involves some calculations, please wait patiently.</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QLabel" name="label_6">
+      <property name="geometry">
+       <rect>
+        <x>359</x>
+        <y>32</y>
+        <width>100</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Dynamic_W:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_12">
+      <property name="geometry">
+       <rect>
+        <x>530</x>
+        <y>32</y>
+        <width>124</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Kriging_model:</string>
+      </property>
      </widget>
     </widget>
     <widget class="QWidget" name="tab_2">
@@ -395,7 +460,7 @@
      <widget class="QLabel" name="label_9">
       <property name="geometry">
        <rect>
-        <x>220</x>
+        <x>250</x>
         <y>30</y>
         <width>81</width>
         <height>31</height>
@@ -408,7 +473,7 @@
      <widget class="QSpinBox" name="classification_opt_num_SpinBox">
       <property name="geometry">
        <rect>
-        <x>220</x>
+        <x>250</x>
         <y>60</y>
         <width>75</width>
         <height>27</height>
@@ -419,19 +484,6 @@
       </property>
       <property name="maximum">
        <number>100000</number>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_10">
-      <property name="geometry">
-       <rect>
-        <x>320</x>
-        <y>35</y>
-        <width>91</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>search:</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_11">
@@ -460,7 +512,7 @@
      <widget class="QLabel" name="label_2">
       <property name="geometry">
        <rect>
-        <x>570</x>
+        <x>390</x>
         <y>30</y>
         <width>111</width>
         <height>31</height>
@@ -473,33 +525,7 @@
      <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
-        <x>320</x>
-        <y>60</y>
-        <width>222</width>
-        <height>29</height>
-       </rect>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_3">
-       <item>
-        <widget class="QRadioButton" name="classification_min_search_TrueRadioButton">
-         <property name="text">
-          <string>minimum</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QRadioButton" name="classification_min_search_FalseRadioButton">
-         <property name="text">
-          <string>maximum</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="layoutWidget">
-      <property name="geometry">
-       <rect>
-        <x>570</x>
+        <x>390</x>
         <y>60</y>
         <width>141</width>
         <height>29</height>
@@ -527,9 +553,9 @@
    <widget class="QPushButton" name="setParametersButton">
     <property name="geometry">
      <rect>
-      <x>620</x>
-      <y>480</y>
-      <width>81</width>
+      <x>760</x>
+      <y>510</y>
+      <width>91</width>
       <height>28</height>
      </rect>
     </property>
@@ -546,9 +572,9 @@
    <widget class="QPushButton" name="resetParametersButton">
     <property name="geometry">
      <rect>
-      <x>510</x>
-      <y>480</y>
-      <width>81</width>
+      <x>620</x>
+      <y>510</y>
+      <width>91</width>
       <height>28</height>
      </rect>
     </property>
@@ -568,7 +594,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>785</width>
+     <width>905</width>
      <height>29</height>
     </rect>
    </property>

@@ -24,8 +24,29 @@ from parameter import Ui_ParameterWindow
 from result import Ui_ResultWindow
 from show import Ui_ShowWindow
 from export import Ui_ExportWindow
+from contrast import Ui_ContrastWindow
+from save import Ui_SaveWindow
 
+from sklearn.utils import resample
+from sklearn.ensemble import RandomForestRegressor
 
+class Kriging_model(object):
+    def fit_pre(self, xtrain, ytrain, xtest, ):
+        Bgo_model = RandomForestRegressor(n_estimators=3, max_depth=3, random_state=42)
+        all_predictions = []
+        for _ in range(10):
+            # Perform Bootstrap sampling
+            X_bootstrap, y_bootstrap = resample(xtrain, ytrain)
+            predictions = Bgo_model.fit(X_bootstrap, y_bootstrap).predict(xtest)
+            # Store the predictions
+            all_predictions.append(predictions)
+
+        # Convert the list of predictions to a NumPy array for easier calculations
+        all_predictions = np.array(all_predictions)
+        # Calculate mean and standard deviation across the samples
+        mean = np.mean(all_predictions, axis=0)
+        std = np.std(all_predictions, axis=0)
+        return mean, std
 
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
@@ -62,6 +83,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.model = QStandardItemModel()
         self.training_sample = None
         self.virtual_sample = None
+        self.Kriging_model = Kriging_model
 
         self.sample_data = {}
         self.selected_sample_data = {}
@@ -70,12 +92,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             'function': 'EI',
             'opt_num': 1,
             'min_search': True,
-            'Dynamic_W': False
+            'Dynamic_W': False,
+            'Kriging_model': True
         }
         self.elements = []
         self.checkboxes = []
         self.selected_elements = []
-
 
     def load_image(self):
         file_path = self.resource_path('Images/HKUSTGZ.png')
@@ -189,6 +211,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def open_parameter_window(self):
         self.parameterWindow.parameters_uploaded.connect(self.get_uploaded_parameters)
+        self.parameterWindow.get_training_sample(self.training_sample)
         self.parameterWindow.show()
 
     def switch_virtual_sample_method(self):
@@ -334,12 +357,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 opt_num = self.parameters_setting['opt_num']
                 min_search = self.parameters_setting['min_search']
                 Dynamic_W = self.parameters_setting['Dynamic_W']
-
+                Kriging_model = self.parameters_setting['Kriging_model']
                 # Capture the output
                 old_stdout = sys.stdout
                 sys.stdout = buffer = io.StringIO()
                 # Print the output to the console (this will be captured)
-                Mymodel = Bgolearn.fit(data_matrix=x, Measured_response=y, virtual_samples=self.virtual_sample, opt_num=opt_num, min_search=min_search, Dynamic_W=Dynamic_W)
+                if Kriging_model:
+                    Mymodel = Bgolearn.fit(data_matrix=x, Measured_response=y, virtual_samples=self.virtual_sample,
+                                           opt_num=opt_num, min_search=min_search, Dynamic_W=Dynamic_W, Kriging_model=self.Kriging_model)
+                else:
+                    Mymodel = Bgolearn.fit(data_matrix=x, Measured_response=y, virtual_samples=self.virtual_sample, opt_num=opt_num, min_search=min_search, Dynamic_W=Dynamic_W)
                 # Restore the original stdout
                 sys.stdout = old_stdout
                 captured_output = buffer.getvalue()
@@ -464,7 +491,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     self.resultWindow.resultTextEdit.append(captured_output)
             else:
                 opt_num = self.parameters_setting['opt_num']
-                min_search = self.parameters_setting['min_search']
+
                 classifier = self.parameters_setting['classifier']
                 Dynamic_W = self.parameters_setting['Dynamic_W']
 
@@ -472,7 +499,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 old_stdout = sys.stdout
                 sys.stdout = buffer = io.StringIO()
                 # Print the output to the console (this will be captured)
-                Mymodel = Bgolearn.fit(data_matrix=x, Measured_response=y, virtual_samples=self.virtual_sample, Mission='Classification', Classifier=classifier,opt_num=opt_num, min_search=min_search, Dynamic_W=Dynamic_W)
+                Mymodel = Bgolearn.fit(data_matrix=x, Measured_response=y, virtual_samples=self.virtual_sample, Mission='Classification', Classifier=classifier,opt_num=opt_num, Dynamic_W=Dynamic_W)
                 # Restore the original stdout
                 sys.stdout = old_stdout
                 captured_output = buffer.getvalue()
@@ -545,7 +572,7 @@ class LoadWindow(QMainWindow, Ui_LoadWindow):
 
     def upload_training_sample_file(self):
         options = QFileDialog.Options()
-        file_path, _ = QFileDialog.getOpenFileName(self, "选择文件", "",
+        file_path, _ = QFileDialog.getOpenFileName(self, "Select file", "",
                                                    "All Files (*);;Text Files (*.txt);;Excel Files (*.xls *.xlsx *.csv)",
                                                    options=options)
         if file_path:
@@ -570,7 +597,7 @@ class LoadWindow(QMainWindow, Ui_LoadWindow):
 
     def upload_virtual_sample_file(self):
         options = QFileDialog.Options()
-        file_path, _ = QFileDialog.getOpenFileName(self, "选择文件", "",
+        file_path, _ = QFileDialog.getOpenFileName(self, "Select file", "",
                                                    "All Files (*);;Text Files (*.txt);;Excel Files (*.xls *.xlsx *.csv)",
                                                    options=options)
         if file_path:
@@ -639,7 +666,7 @@ class DownloadWindow(QMainWindow, Ui_DownloadWindow):
     def browse_download_path(self):
         options = QFileDialog.Options()
         # 获取文件夹路径
-        self.download_virtual_sample_file_path = QFileDialog.getExistingDirectory(self, "选择保存 CSV 文件的文件夹", options=options)
+        self.download_virtual_sample_file_path = QFileDialog.getExistingDirectory(self, "Select the folder to save the CSV file", options=options)
         if self.download_virtual_sample_file_path:
             self.downloadVirtualSampleFilePath.setText(self.download_virtual_sample_file_path)
     def get_virtual_sample(self, virtual_sample):
@@ -679,6 +706,7 @@ class ShowWindow(QMainWindow, Ui_ShowWindow):
             self.show_training_sample()
             self.first_element_checked()
 
+
     def open_export_window(self):
         if self.training_sample is None:
             QMessageBox.warning(self, "Warning", "Please enter training sample first！")
@@ -693,7 +721,6 @@ class ShowWindow(QMainWindow, Ui_ShowWindow):
         # 定义元素列表
         self.elements = list(self.training_sample.columns)
         self.elements.append('Numerical Features')
-        self.elements.append('Pred v.s. Label (waiting)')
 
         self.buttonGroup = QButtonGroup(scroll_content)
         self.buttonGroup.buttonClicked[int].connect(self.on_radio_button_clicked)
@@ -730,7 +757,7 @@ class ShowWindow(QMainWindow, Ui_ShowWindow):
         # 创建一个matplotlib Figure
         fig, ax = plt.subplots(figsize=(7.5, 4.5))
 
-        if 0 <= index <= len(self.elements) - 4:
+        if 0 <= index <= len(self.elements) - 3:
             # 绘制柱状图或直方图
             if pd.api.types.is_numeric_dtype(data_features[column]):
                 sns.histplot(data=data_features, x=column, kde=True, color='skyblue', bins=30, edgecolor='black', ax=ax)
@@ -746,7 +773,7 @@ class ShowWindow(QMainWindow, Ui_ShowWindow):
             ax.tick_params(axis='y', labelsize=12)
             sns.despine(trim=True)
             plt.tight_layout()
-        elif index == len(self.elements) - 3:
+        elif index == len(self.elements) - 2:
             # 标签列的统计分析
             sns.countplot(x=labels, hue=labels, palette="Set2", legend=False, ax=ax)
             ax.set_title('Distribution of label columns', fontsize=18)
@@ -756,7 +783,7 @@ class ShowWindow(QMainWindow, Ui_ShowWindow):
             ax.tick_params(axis='y', labelsize=12)
             sns.despine(trim=True)
             plt.tight_layout()
-        elif index == len(self.elements) - 2:
+        elif index == len(self.elements) - 1:
             # 绘制箱线图以展示数值列的分布情况
             numeric_columns = data_features.select_dtypes(include=['float64', 'int64']).columns
             if len(numeric_columns) > 0:
@@ -768,8 +795,6 @@ class ShowWindow(QMainWindow, Ui_ShowWindow):
                 ax.tick_params(axis='y', labelsize=12)
                 sns.despine(trim=True)
                 plt.tight_layout()
-        elif index == len(self.elements) - 1:
-            fig = self.pre_scatter()
 
         # 将matplotlib Figure转换为FigureCanvas
         canvas = FigureCanvas(fig)
@@ -895,7 +920,7 @@ class ExportWindow(QMainWindow, Ui_ExportWindow):
     def browse_export_path(self):
         options = QFileDialog.Options()
         # 获取文件夹路径
-        self.export_training_sample_path = QFileDialog.getExistingDirectory(self, "选择保存图片文件的文件夹", options=options)
+        self.export_training_sample_path = QFileDialog.getExistingDirectory(self, "Select the folder to save the image files", options=options)
         if self.export_training_sample_path:
             self.exportTrainingSamplePath.setText(self.export_training_sample_path)
     def get_training_sample(self, training_sample):
@@ -1073,11 +1098,16 @@ class ParameterWindow(QMainWindow, Ui_ParameterWindow):
         self.setupUi(self)
         self.setWindowTitle("Parameter")
 
+        # 子窗口
+        self.contrastWindow = ContrastWindow()
+
         # 变量
+        self.training_sample = None
         self.regression_default_setting = {
             'opt_num': 1,
             'min_search': True,
             'Dynamic_W': False,
+            'Kriging_model': True,
             'function': {
                 'EI': {
                     'name': 'Expected improvement method'
@@ -1128,7 +1158,6 @@ class ParameterWindow(QMainWindow, Ui_ParameterWindow):
         self.classification_default_setting = {
             'classifier': ['GaussianProcess', 'LogisticRegression', 'NaiveBayes', 'SVM', 'RandomForest'],
             'opt_num': 1,
-            'min_search': True,
             'Dynamic_W': False,
             'function': {
                 'Least_cfd': 'Least Confidence method',
@@ -1147,6 +1176,7 @@ class ParameterWindow(QMainWindow, Ui_ParameterWindow):
         self.regressionFunctionComboBox.currentIndexChanged.connect(self.change_regression_function)
         self.setParametersButton.clicked.connect(self.set_parameters)
         self.resetParametersButton.clicked.connect(self.reset_parameters)
+        self.showRegressionContrastButton.clicked.connect(self.open_contrast_window)
     # 初始化
     def initialize(self):
 
@@ -1161,6 +1191,10 @@ class ParameterWindow(QMainWindow, Ui_ParameterWindow):
             self.regression_Dynamic_W_TrueRadioButton.setChecked(True)
         else:
             self.regression_Dynamic_W_FalseRadioButton.setChecked(True)
+        if self.regression_default_setting['Kriging_model']:
+            self.regression_Kriging_model_Random_Forest_RadioButton.setChecked(True)
+        else:
+            self.regression_Kriging_model_Gaussian_Process_RadioButton.setChecked(True)
 
         self.parameterLabel.setVisible(False)
         self.regressionParameter1Widget.setVisible(False)
@@ -1169,12 +1203,12 @@ class ParameterWindow(QMainWindow, Ui_ParameterWindow):
         self.classificationClassifierComboBox.addItems(self.classification_default_setting['classifier'])
         self.classificationFunctionComboBox.addItems(self.classification_default_setting['function'].keys())
         self.classification_opt_num_SpinBox.setValue(self.classification_default_setting['opt_num'])
-        self.classification_min_search_TrueRadioButton.setChecked(self.classification_default_setting['min_search'])
         if self.classification_default_setting['Dynamic_W']:
             self.classification_Dynamic_W_TrueRadioButton.setChecked(True)
         else:
             self.classification_Dynamic_W_FalseRadioButton.setChecked(True)
-
+    def get_training_sample(self, training_sample):
+        self.training_sample = training_sample
     def switch_tab_module(self):
         if self.regressionRadioButton.isChecked():
             self.tabWidget.setCurrentIndex(0)
@@ -1263,6 +1297,7 @@ class ParameterWindow(QMainWindow, Ui_ParameterWindow):
             self.setting['opt_num'] = self.regression_opt_num_SpinBox.value()
             self.setting['min_search'] = self.regression_min_search_TrueRadioButton.isChecked()
             self.setting['Dynamic_W'] = self.regression_Dynamic_W_TrueRadioButton.isChecked()
+            self.setting['Kriging_model'] = self.regression_Kriging_model_Random_Forest_RadioButton.isChecked()
             function = str(self.regressionFunctionComboBox.currentText())
             self.setting['function'] = function
             if function in ['UCB', 'PoI', 'PES', 'Knowledge_G']:
@@ -1285,7 +1320,6 @@ class ParameterWindow(QMainWindow, Ui_ParameterWindow):
             self.setting['module'] = 'classification'
             self.setting['classifier'] = self.classificationClassifierComboBox.currentText()
             self.setting['opt_num'] = self.classification_opt_num_SpinBox.value()
-            self.setting['min_search'] = self.classification_min_search_TrueRadioButton.isChecked()
             self.setting['Dynamic_W'] = self.classification_Dynamic_W_TrueRadioButton.isChecked()
             self.setting['function'] = self.classificationFunctionComboBox.currentText()
         self.parameters_uploaded.emit(self.setting)
@@ -1300,18 +1334,250 @@ class ParameterWindow(QMainWindow, Ui_ParameterWindow):
             self.regression_Dynamic_W_TrueRadioButton.setChecked(True)
         else:
             self.regression_Dynamic_W_FalseRadioButton.setChecked(True)
+        if self.regression_default_setting['Kriging_model']:
+            self.regression_Kriging_model_Random_Forest_RadioButton.setChecked(True)
+        else:
+            self.regression_Kriging_model_Gaussian_Process_RadioButton.setChecked(True)
         self.parameterLabel.setVisible(False)
         self.regressionParameter1Widget.setVisible(False)
         self.regressionParameter2Widget.setVisible(False)
 
         self.classification_opt_num_SpinBox.setValue(self.classification_default_setting['opt_num'])
-        self.classification_min_search_TrueRadioButton.setChecked(self.classification_default_setting['min_search'])
         if self.classification_default_setting['Dynamic_W']:
             self.classification_Dynamic_W_TrueRadioButton.setChecked(True)
         else:
             self.classification_Dynamic_W_FalseRadioButton.setChecked(True)
         self.classificationClassifierComboBox.setCurrentIndex(0)
         self.classificationFunctionComboBox.setCurrentIndex(0)
+
+    def open_contrast_window(self):
+        if self.training_sample is None:
+            QMessageBox.warning(self, "Warning", "Please enter the training sample file！")
+            return
+        self.contrastWindow.get_training_sample(self.training_sample)
+        self.contrastWindow.show()
+        self.contrastWindow.plot_contrast()
+
+
+
+
+class ContrastWindow(QMainWindow, Ui_ContrastWindow):
+    def __init__(self):
+        super(ContrastWindow, self).__init__()
+        self.setupUi(self)
+        self.setWindowTitle("Pred v.s. Label")
+
+        # 子窗口
+        self.saveWindow = SaveWindow()
+
+        # 变量
+        self.training_sample = None
+
+        # 创建QGraphicsScene
+        self.scene_contrast = QGraphicsScene(self)
+        self.regressionContrastGraphicsView.setScene(self.scene_contrast)
+        self.saveRegressionContrastButton.clicked.connect(self.open_save_window)
+
+
+
+    def get_training_sample(self, training_sample):
+        self.training_sample = training_sample
+
+    def plot_contrast(self):
+        self.scene_contrast.clear()
+        fig = self.pre_scatter()
+        # 将matplotlib Figure转换为FigureCanvas
+        canvas = FigureCanvas(fig)
+        self.scene_contrast.addWidget(canvas)
+
+    def open_save_window(self):
+        self.saveWindow.get_training_sample(self.training_sample)
+        self.saveWindow.show()
+
+
+
+
+
+    def pre_scatter(self):
+        data = self.training_sample
+        X = data.iloc[:, :-1]
+        Y = data.iloc[:, -1]
+
+        X = np.array(X)
+        Y = np.array(Y)
+
+        loo = LeaveOneOut()
+        loo.get_n_splits(X)
+
+        ypre = []
+        yvar = []
+
+        KErnel = RBF() + WhiteKernel()
+        for train_index, test_index in loo.split(X):
+            X_train, X_test = X[train_index], X[test_index]
+            y_train, y_test = Y[train_index], Y[test_index]
+            model = GaussianProcessRegressor(kernel=KErnel, n_restarts_optimizer=10, alpha=0, normalize_y=True,
+                                             random_state=0).fit(X_train, y_train)
+            y_pre, y_var = model.predict(X_test, return_std=True)
+            ypre.append(y_pre[0])
+            yvar.append(y_var[0])
+        y = Y
+        ypre = np.array(ypre)
+        plt.rcParams.update({
+            'font.size': 16,
+            'axes.labelsize': 20,
+            'axes.titlesize': 24,
+            'legend.fontsize': 16,
+            'xtick.labelsize': 16,
+            'ytick.labelsize': 16,
+            'axes.linewidth': 2,
+            'xtick.major.size': 8,
+            'ytick.major.size': 8,
+            'xtick.major.width': 2,
+            'ytick.major.width': 2,
+            'lines.linewidth': 2.5,
+            'lines.markersize': 10,
+            'axes.grid': True,
+            'grid.alpha': 0.8,
+            'grid.linestyle': '--',
+            'grid.linewidth': 1,
+            'figure.figsize': (12, 12)
+        })
+        fig, ax = plt.subplots(figsize=(4.7, 4.7))
+        sns.set(style="whitegrid")
+
+        ax.scatter(y, ypre, marker='o', s=150, edgecolor='k', color='#1f77b4', alpha=0.8)
+
+        gap = (y.max() - y.min()) * 0.05
+        ax.plot([y.min() - gap, y.max() + gap], [y.min() - gap, y.max() + gap], '--', color='k', linewidth=2.5)
+
+        ax.set_title('Model Predictions vs True Values', fontsize=18)
+        ax.set_xlabel('True Values', fontsize=14)
+        ax.set_ylabel('Predicted Values', fontsize=14)
+
+        ax.text(0.05, 0.95, 'Correlation Coefficient: {:.2f}'.format(np.corrcoef(y, ypre)[0, 1]), fontsize=12,
+                color='black', transform=ax.transAxes)
+        ax.text(0.05, 0.9, 'RMSE: {:.2f}'.format(np.sqrt(np.mean((y - ypre) ** 2))), fontsize=12, color='black',
+                transform=ax.transAxes)
+
+        ax.set_xlim(y.min() - gap, y.max() + gap)
+        ax.set_ylim(y.min() - gap, y.max() + gap)
+        ax.set_aspect('equal', adjustable='box')
+
+        fig.tight_layout()
+        return fig
+
+class SaveWindow(QMainWindow, Ui_SaveWindow):
+    def __init__(self):
+        super(SaveWindow, self).__init__()
+        self.setupUi(self)
+        self.setWindowTitle('Save')
+
+        self.browseDownloadContrastPictureButton.clicked.connect(self.browse_save_path)
+        self.okDownloadButton.clicked.connect(self.save)
+        self.cancelDownloadButton.clicked.connect(self.close)
+
+        self.training_sample = None
+        self.save_contrast_picture_path = None
+
+    def browse_save_path(self):
+        options = QFileDialog.Options()
+        # 获取文件夹路径
+        self.save_contrast_picture_path = QFileDialog.getExistingDirectory(self, "Select the folder to save the image file",
+                                                                            options=options)
+        if self.save_contrast_picture_path:
+            self.downloadContrastPicturePath.setText(self.save_contrast_picture_path)
+    def get_training_sample(self, training_sample):
+        self.training_sample = training_sample
+
+    def pre_scatter(self):
+        data = self.training_sample
+        X = data.iloc[:, :-1]
+        Y = data.iloc[:, -1]
+
+        X = np.array(X)
+        Y = np.array(Y)
+
+        loo = LeaveOneOut()
+        loo.get_n_splits(X)
+
+        ypre = []
+        yvar = []
+
+        KErnel = RBF() + WhiteKernel()
+        for train_index, test_index in loo.split(X):
+            X_train, X_test = X[train_index], X[test_index]
+            y_train, y_test = Y[train_index], Y[test_index]
+            model = GaussianProcessRegressor(kernel=KErnel, n_restarts_optimizer=10, alpha=0, normalize_y=True,
+                                             random_state=0).fit(X_train, y_train)
+            y_pre, y_var = model.predict(X_test, return_std=True)
+            ypre.append(y_pre[0])
+            yvar.append(y_var[0])
+        y = Y
+        ypre = np.array(ypre)
+
+        plt.rcParams.update({
+            'font.size': 16,
+            'axes.labelsize': 20,
+            'axes.titlesize': 24,
+            'legend.fontsize': 16,
+            'xtick.labelsize': 16,
+            'ytick.labelsize': 16,
+            'axes.linewidth': 2,
+            'xtick.major.size': 8,
+            'ytick.major.size': 8,
+            'xtick.major.width': 2,
+            'ytick.major.width': 2,
+            'lines.linewidth': 2.5,
+            'lines.markersize': 10,
+            'axes.grid': True,
+            'grid.alpha': 0.8,
+            'grid.linestyle': '--',
+            'grid.linewidth': 1,
+            'figure.figsize': (12, 12)
+        })
+        fig, ax = plt.subplots(figsize=(8, 8))
+
+        sns.set(style="whitegrid")
+
+        ax.scatter(y, ypre, marker='o', s=150, edgecolor='k', color='#1f77b4', alpha=0.8)
+
+        gap = (y.max() - y.min()) * 0.05
+        ax.plot([y.min() - gap, y.max() + gap], [y.min() - gap, y.max() + gap], '--', color='k', linewidth=2.5)
+
+        ax.set_title('Model Predictions vs True Values', fontsize=24)
+        ax.set_xlabel('True Values', fontsize=18)
+        ax.set_ylabel('Predicted Values', fontsize=18)
+
+        ax.text(0.05, 0.95, 'Correlation Coefficient: {:.2f}'.format(np.corrcoef(y, ypre)[0, 1]), fontsize=18,
+                color='black', transform=ax.transAxes)
+        ax.text(0.05, 0.9, 'RMSE: {:.2f}'.format(np.sqrt(np.mean((y - ypre) ** 2))), fontsize=18, color='black',
+                transform=ax.transAxes)
+
+        ax.set_xlim(y.min() - gap, y.max() + gap)
+        ax.set_ylim(y.min() - gap, y.max() + gap)
+        ax.set_aspect('equal', adjustable='box')
+
+        fig.tight_layout()
+        return fig
+
+    def save(self):
+        if self.save_contrast_picture_path is not None:
+            if self.training_sample is None:
+                QMessageBox.warning(self, "Warning", "Please enter the training sample file！")
+                return
+            save_dir = self.save_contrast_picture_path
+
+            # contrast
+            fig = self.pre_scatter()
+            fig.savefig(os.path.join(save_dir, "contrast.png"), dpi=500, bbox_inches='tight')
+            plt.close(fig)
+
+            self.statusBar().showMessage("Export successfully！", 1000)
+            self.close()
+        else:
+            QMessageBox.warning(self, "Warning", "Please enter the export path！")
+            return
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
