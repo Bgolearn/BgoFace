@@ -1,5 +1,5 @@
-## BgoFace: The User Interface of the [Bgolearn](https://github.com/Bin-Cao/Bgolearn) Platform
-
+## BgoFace: The User Interface of the [Bgolearn](http://bgolearn.caobin.asia/) Platform
+[HomePage](http://bgolearn.caobin.asia/) 
 ![plot](https://github.com/Bin-Cao/Bgolearn/assets/86995074/d4e43900-eadb-4ddf-af46-0208314de41a)
 
 ### Dependent Packages
