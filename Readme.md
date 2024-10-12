@@ -2,6 +2,7 @@
 [HomePage](http://bgolearn.caobin.asia/) 
 ![plot](https://github.com/Bin-Cao/Bgolearn/assets/86995074/d4e43900-eadb-4ddf-af46-0208314de41a)
 
+### code tutorial : [BiliBili](https://www.bilibili.com/video/BV1LTtLeaEZp/?spm_id_from=333.337.search-card.all.click)
 ### Dependent Packages
 - **scikit-learn (sklearn)**: A machine learning library for Python.
 - **Bgolearn**: A Bayesian global optimization package for Material Design.
