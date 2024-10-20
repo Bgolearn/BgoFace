@@ -7,6 +7,7 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import Bgolearn.BGOsampling as BGOS
+from MultiBgolearn import bgo
 from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog, QMessageBox, QHeaderView, QCheckBox, QVBoxLayout, \
     QWidget, QRadioButton, QButtonGroup, QGraphicsScene, QHBoxLayout
@@ -20,7 +21,8 @@ from sklearn.model_selection import LeaveOneOut
 from interface import Ui_MainWindow
 from load import Ui_LoadWindow
 from download import Ui_DownloadWindow
-from parameter import Ui_ParameterWindow
+from single_object_parameter import Ui_SingleObjectParameterWindow
+from multiple_objects_parameter import Ui_MultipleObjectsParameterWindow
 from result import Ui_ResultWindow
 from show import Ui_ShowWindow
 from export import Ui_ExportWindow
@@ -56,7 +58,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # 子窗口
         self.loadWindow = LoadWindow()
-        self.parameterWindow = ParameterWindow()
+        self.singleObjectParameterWindow = SingleObjectParameterWindow()
+        self.multipleObjectsParameterWindow = MultipleObjectsParameterWindow()
         self.downloadWindow = DownloadWindow()
         self.showWindow = ShowWindow()
         self.resultWindow = ResultWindow()
@@ -72,28 +75,39 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.manualVirtualSampleRadioButton.clicked.connect(self.switch_virtual_sample_method)
         self.nameComboBox.currentIndexChanged.connect(self.change_virtual_sample)
         self.okButton.clicked.connect(self.ok_virtual_sample)
-        self.actionParameter.triggered.connect(self.open_parameter_window)
+        self.actionSingleObjectParameter.triggered.connect(self.open_single_object_parameter_window)
+        self.actionMultipleObjectParameter.triggered.connect(self.open_multiple_object_parameter_window)
         self.downloadVirtualSampleButton.clicked.connect(self.open_download_window)
         self.fitButton.clicked.connect(self.fit)
 
         # 变量
+        self.singleObjectRadioButton.setChecked(True)
         self.inputVirtualSampleRadioButton.setChecked(True)
         self.selectSamplesWidget.setVisible(False)
         self.manualVirtualSampleWidget.setVisible(False)
         self.model = QStandardItemModel()
         self.training_sample = None
         self.virtual_sample = None
+        self.multiple_objects_training_sample_file_path = None
+        self.multiple_objects_virtual_sample_file_path = None
         self.Kriging_model = Kriging_model
 
         self.sample_data = {}
         self.selected_sample_data = {}
-        self.parameters_setting = {
+        self.single_object_parameters_setting = {
             'module': 'regression',
             'function': 'EI',
             'opt_num': 1,
             'min_search': True,
             'Dynamic_W': False,
             'Kriging_model': True
+        }
+        self.multiple_objects_parameters_setting = {
+            'object_num': 2,
+            'max_search': True,
+            'method': 'UCB',
+            'bootstrap': 5,
+            'assign_model': 'RandomForest'
         }
         self.elements = []
         self.checkboxes = []
@@ -209,10 +223,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.downloadWindow.get_virtual_sample(self.virtual_sample)
         self.downloadWindow.show()
 
-    def open_parameter_window(self):
-        self.parameterWindow.parameters_uploaded.connect(self.get_uploaded_parameters)
-        self.parameterWindow.get_training_sample(self.training_sample)
-        self.parameterWindow.show()
+    def open_single_object_parameter_window(self):
+        if self.multipleObjectRadioButton.isChecked():
+            QMessageBox.warning(self, "Warning", "Please select the 'Single Object' mode!")
+            return
+        else:
+            self.singleObjectParameterWindow.single_object_parameters_uploaded.connect(self.get_single_object_uploaded_parameters)
+            self.singleObjectParameterWindow.get_training_sample(self.training_sample)
+            self.singleObjectParameterWindow.show()
+
+    def open_multiple_object_parameter_window(self):
+        if self.singleObjectRadioButton.isChecked():
+            QMessageBox.warning(self, "Warning", "Please select the 'Multiple Object' mode!")
+            return
+        else:
+            self.multipleObjectsParameterWindow.multiple_objects_parameters_uploaded.connect(self.get_multiple_objects_uploaded_parameters)
+            self.multipleObjectsParameterWindow.get_training_sample(self.training_sample)
+            self.multipleObjectsParameterWindow.show()
 
     def switch_virtual_sample_method(self):
         if self.inputVirtualSampleRadioButton.isChecked():
@@ -231,12 +258,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def process_uploaded_files(self, file_contents):
         if 'training_sample' in file_contents:
             self.training_sample = file_contents['training_sample']['training_sample_file']
+            self.multiple_objects_training_sample_file_path = file_contents['training_sample']['training_sample_file_path']
             if file_contents['training_sample']['training_sample_file_extension'] in ['xls', 'xlsx', 'csv']:
                 self.display_excel_content(self.training_sample, self.trainingSampleTableView)
                 self.get_training_sample_data(self.training_sample)
 
         if 'virtual_sample' in file_contents:
             self.virtual_sample = file_contents['virtual_sample']['virtual_sample_file']
+            self.multiple_objects_virtual_sample_file_path = file_contents['virtual_sample']['virtual_sample_file_path']
             if file_contents['virtual_sample']['virtual_sample_file_extension'] in ['xls', 'xlsx', 'csv']:
                 self.display_excel_content(self.virtual_sample, self.virtualSampleTableView)
         else:
@@ -247,12 +276,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             # 设置空模型给 QTableView
             self.virtualSampleTableView.setModel(empty_model)
-
             self.show_select_element()
 
-    def get_uploaded_parameters(self, setting):
-        self.parameters_setting = setting
+    def get_single_object_uploaded_parameters(self, setting):
+        self.single_object_parameters_setting = setting
 
+    def get_multiple_objects_uploaded_parameters(self, setting):
+        self.multiple_objects_parameters_setting = setting
 
     def display_excel_content(self, excel_file, table_view):
         model = QStandardItemModel()
@@ -333,217 +363,240 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.get_virtual_sample_data()
 
     def fit(self):
-        if self.training_sample is None or self.virtual_sample is None:
-            QMessageBox.warning(self, "Warning", "Please enter suitable training sample and virtual sample！")
-            return
-        if self.inputVirtualSampleRadioButton.isChecked():
-            x = self.training_sample.iloc[:, :-1]
+        if self.multipleObjectRadioButton.isChecked():
+            dataset = self.multiple_objects_training_sample_file_path
+            VSdataset = self.multiple_objects_virtual_sample_file_path
+            object_num = self.multiple_objects_parameters_setting['object_num']
+            max_search = self.multiple_objects_parameters_setting['max_search']
+            method = self.multiple_objects_parameters_setting['method']
+            bootstrap = self.multiple_objects_parameters_setting['bootstrap']
+            assign_model = self.multiple_objects_parameters_setting['assign_model']
+            try:
+                # Capture the output
+                old_stdout = sys.stdout
+                sys.stdout = buffer = io.StringIO()
+                # Print the output to the console (this will be captured)
+                bgo.fit(dataset=dataset, VSdataset=VSdataset, assign_model=assign_model, object_num=object_num,
+                        max_search=max_search, method=method, bootstrap=bootstrap)
+                # Restore the original stdout
+                sys.stdout = old_stdout
+                captured_output = buffer.getvalue()
+                buffer.close()
+                self.resultWindow.resultTextEdit.append(captured_output)
+            except Exception as e:
+                self.show_error_message(str(e))
         else:
-            x = self.training_sample[self.selected_elements]
-        y = self.training_sample.iloc[:, -1]
-
-        # Capture the output
-        old_stdout = sys.stdout
-        sys.stdout = buffer = io.StringIO()
-        # Print the output to the console (this will be captured)
-        Bgolearn = BGOS.Bgolearn()
-        # Restore the original stdout
-        sys.stdout = old_stdout
-        captured_output = buffer.getvalue()
-        buffer.close()
-        self.resultWindow.resultTextEdit.append(captured_output)
-        try:
-            if self.parameters_setting['module'] == 'regression':
-                opt_num = self.parameters_setting['opt_num']
-                min_search = self.parameters_setting['min_search']
-                Dynamic_W = self.parameters_setting['Dynamic_W']
-                Kriging_model = self.parameters_setting['Kriging_model']
-                # Capture the output
-                old_stdout = sys.stdout
-                sys.stdout = buffer = io.StringIO()
-                # Print the output to the console (this will be captured)
-                if Kriging_model:
-                    Mymodel = Bgolearn.fit(data_matrix=x, Measured_response=y, virtual_samples=self.virtual_sample,
-                                           opt_num=opt_num, min_search=min_search, Dynamic_W=Dynamic_W, Kriging_model=self.Kriging_model)
-                else:
-                    Mymodel = Bgolearn.fit(data_matrix=x, Measured_response=y, virtual_samples=self.virtual_sample, opt_num=opt_num, min_search=min_search, Dynamic_W=Dynamic_W)
-                # Restore the original stdout
-                sys.stdout = old_stdout
-                captured_output = buffer.getvalue()
-                buffer.close()
-                self.resultWindow.resultTextEdit.append(captured_output)
-
-                if self.parameters_setting['function'] == 'EI':
-                    self.resultWindow.show()
-                    # Capture the output
-                    old_stdout = sys.stdout
-                    sys.stdout = buffer = io.StringIO()
-                    # Print the output to the console (this will be captured)
-                    Mymodel.EI()
-                    # Restore the original stdout
-                    sys.stdout = old_stdout
-                    captured_output = buffer.getvalue()
-                    buffer.close()
-                    self.resultWindow.resultTextEdit.append(captured_output)
-                if self.parameters_setting['function'] == 'EI_plugin':
-                    self.resultWindow.show()
-                    # Capture the output
-                    old_stdout = sys.stdout
-                    sys.stdout = buffer = io.StringIO()
-                    # Print the output to the console (this will be captured)
-                    Mymodel.EI_plugin()
-                    # Restore the original stdout
-                    sys.stdout = old_stdout
-                    captured_output = buffer.getvalue()
-                    buffer.close()
-                    self.resultWindow.resultTextEdit.append(captured_output)
-                if self.parameters_setting['function'] == 'Augmented_EI':
-                    self.resultWindow.show()
-                    alpha = int(self.parameters_setting['parameter1'])
-                    tao = float(self.parameters_setting['parameter2'])
-                    # Capture the output
-                    old_stdout = sys.stdout
-                    sys.stdout = buffer = io.StringIO()
-                    # Print the output to the console (this will be captured)
-                    Mymodel.Augmented_EI(alpha=alpha, tao=tao)
-                    # Restore the original stdout
-                    sys.stdout = old_stdout
-                    captured_output = buffer.getvalue()
-                    buffer.close()
-                    self.resultWindow.resultTextEdit.append(captured_output)
-                if self.parameters_setting['function'] == 'EQI':
-                    self.resultWindow.show()
-                    beta = float(self.parameters_setting['parameter1'])
-                    tao_new = float(self.parameters_setting['parameter2'])
-                    # Capture the output
-                    old_stdout = sys.stdout
-                    sys.stdout = buffer = io.StringIO()
-                    # Print the output to the console (this will be captured)
-                    Mymodel.EQI(beta=beta, tao_new=tao_new)
-                    # Restore the original stdout
-                    sys.stdout = old_stdout
-                    captured_output = buffer.getvalue()
-                    buffer.close()
-                    self.resultWindow.resultTextEdit.append(captured_output)
-                if self.parameters_setting['function'] == 'Reinterpolation_EI':
-                    self.resultWindow.show()
-                    # Capture the output
-                    old_stdout = sys.stdout
-                    sys.stdout = buffer = io.StringIO()
-                    # Print the output to the console (this will be captured)
-                    Mymodel.Reinterpolation_EI()
-                    # Restore the original stdout
-                    sys.stdout = old_stdout
-                    captured_output = buffer.getvalue()
-                    buffer.close()
-                    self.resultWindow.resultTextEdit.append(captured_output)
-                if self.parameters_setting['function'] == 'UCB':
-                    self.resultWindow.show()
-                    alpha = int(self.parameters_setting['parameter1'])
-                    # Capture the output
-                    old_stdout = sys.stdout
-                    sys.stdout = buffer = io.StringIO()
-                    # Print the output to the console (this will be captured)
-                    Mymodel.UCB(alpha=alpha)
-                    # Restore the original stdout
-                    sys.stdout = old_stdout
-                    captured_output = buffer.getvalue()
-                    buffer.close()
-                    self.resultWindow.resultTextEdit.append(captured_output)
-                if self.parameters_setting['function'] == 'PoI':
-                    self.resultWindow.show()
-                    tao = float(self.parameters_setting['parameter1'])
-                    # Capture the output
-                    old_stdout = sys.stdout
-                    sys.stdout = buffer = io.StringIO()
-                    # Print the output to the console (this will be captured)
-                    Mymodel.PoI(tao=tao)
-                    # Restore the original stdout
-                    sys.stdout = old_stdout
-                    captured_output = buffer.getvalue()
-                    buffer.close()
-                    self.resultWindow.resultTextEdit.append(captured_output)
-                if self.parameters_setting['function'] == 'PES':
-                    self.resultWindow.show()
-                    sam_num = int(self.parameters_setting['parameter1'])
-                    # Capture the output
-                    old_stdout = sys.stdout
-                    sys.stdout = buffer = io.StringIO()
-                    # Print the output to the console (this will be captured)
-                    Mymodel.PES(sam_num=sam_num)
-                    # Restore the original stdout
-                    sys.stdout = old_stdout
-                    captured_output = buffer.getvalue()
-                    buffer.close()
-                    self.resultWindow.resultTextEdit.append(captured_output)
-                if self.parameters_setting['function'] == 'Knowledge_G':
-                    self.resultWindow.show()
-                    MC_num = int(self.parameters_setting['parameter1'])
-                    # Capture the output
-                    old_stdout = sys.stdout
-                    sys.stdout = buffer = io.StringIO()
-                    # Print the output to the console (this will be captured)
-                    Mymodel.Knowledge_G(MC_num=MC_num)
-                    # Restore the original stdout
-                    sys.stdout = old_stdout
-                    captured_output = buffer.getvalue()
-                    buffer.close()
-                    self.resultWindow.resultTextEdit.append(captured_output)
+            if self.training_sample is None or self.virtual_sample is None:
+                QMessageBox.warning(self, "Warning", "Please enter suitable training sample and virtual sample！")
+                return
+            if self.inputVirtualSampleRadioButton.isChecked():
+                x = self.training_sample.iloc[:, :-1]
             else:
-                opt_num = self.parameters_setting['opt_num']
+                x = self.training_sample[self.selected_elements]
+            y = self.training_sample.iloc[:, -1]
 
-                classifier = self.parameters_setting['classifier']
-                Dynamic_W = self.parameters_setting['Dynamic_W']
-
-                # Capture the output
-                old_stdout = sys.stdout
-                sys.stdout = buffer = io.StringIO()
-                # Print the output to the console (this will be captured)
-                Mymodel = Bgolearn.fit(data_matrix=x, Measured_response=y, virtual_samples=self.virtual_sample, Mission='Classification', Classifier=classifier,opt_num=opt_num, Dynamic_W=Dynamic_W)
-                # Restore the original stdout
-                sys.stdout = old_stdout
-                captured_output = buffer.getvalue()
-                buffer.close()
-                self.resultWindow.resultTextEdit.append(captured_output)
-
-                if self.parameters_setting['function'] == 'Least_cfd':
-                    self.resultWindow.show()
+            # Capture the output
+            old_stdout = sys.stdout
+            sys.stdout = buffer = io.StringIO()
+            # Print the output to the console (this will be captured)
+            Bgolearn = BGOS.Bgolearn()
+            # Restore the original stdout
+            sys.stdout = old_stdout
+            captured_output = buffer.getvalue()
+            buffer.close()
+            self.resultWindow.resultTextEdit.append(captured_output)
+            try:
+                if self.single_object_parameters_setting['module'] == 'regression':
+                    opt_num = self.single_object_parameters_setting['opt_num']
+                    min_search = self.single_object_parameters_setting['min_search']
+                    Dynamic_W = self.single_object_parameters_setting['Dynamic_W']
+                    Kriging_model = self.single_object_parameters_setting['Kriging_model']
                     # Capture the output
                     old_stdout = sys.stdout
                     sys.stdout = buffer = io.StringIO()
                     # Print the output to the console (this will be captured)
-                    Mymodel.Least_cfd()
+                    if Kriging_model:
+                        Mymodel = Bgolearn.fit(data_matrix=x, Measured_response=y, virtual_samples=self.virtual_sample,
+                                               opt_num=opt_num, min_search=min_search, Dynamic_W=Dynamic_W, Kriging_model=self.Kriging_model)
+                    else:
+                        Mymodel = Bgolearn.fit(data_matrix=x, Measured_response=y, virtual_samples=self.virtual_sample, opt_num=opt_num, min_search=min_search, Dynamic_W=Dynamic_W)
                     # Restore the original stdout
                     sys.stdout = old_stdout
                     captured_output = buffer.getvalue()
                     buffer.close()
                     self.resultWindow.resultTextEdit.append(captured_output)
-                if self.parameters_setting['function'] == 'Margin_S':
-                    self.resultWindow.show()
+
+                    if self.single_object_parameters_setting['function'] == 'EI':
+                        self.resultWindow.show()
+                        # Capture the output
+                        old_stdout = sys.stdout
+                        sys.stdout = buffer = io.StringIO()
+                        # Print the output to the console (this will be captured)
+                        Mymodel.EI()
+                        # Restore the original stdout
+                        sys.stdout = old_stdout
+                        captured_output = buffer.getvalue()
+                        buffer.close()
+                        self.resultWindow.resultTextEdit.append(captured_output)
+                    if self.single_object_parameters_setting['function'] == 'EI_plugin':
+                        self.resultWindow.show()
+                        # Capture the output
+                        old_stdout = sys.stdout
+                        sys.stdout = buffer = io.StringIO()
+                        # Print the output to the console (this will be captured)
+                        Mymodel.EI_plugin()
+                        # Restore the original stdout
+                        sys.stdout = old_stdout
+                        captured_output = buffer.getvalue()
+                        buffer.close()
+                        self.resultWindow.resultTextEdit.append(captured_output)
+                    if self.single_object_parameters_setting['function'] == 'Augmented_EI':
+                        self.resultWindow.show()
+                        alpha = int(self.single_object_parameters_setting['parameter1'])
+                        tao = float(self.single_object_parameters_setting['parameter2'])
+                        # Capture the output
+                        old_stdout = sys.stdout
+                        sys.stdout = buffer = io.StringIO()
+                        # Print the output to the console (this will be captured)
+                        Mymodel.Augmented_EI(alpha=alpha, tao=tao)
+                        # Restore the original stdout
+                        sys.stdout = old_stdout
+                        captured_output = buffer.getvalue()
+                        buffer.close()
+                        self.resultWindow.resultTextEdit.append(captured_output)
+                    if self.single_object_parameters_setting['function'] == 'EQI':
+                        self.resultWindow.show()
+                        beta = float(self.single_object_parameters_setting['parameter1'])
+                        tao_new = float(self.single_object_parameters_setting['parameter2'])
+                        # Capture the output
+                        old_stdout = sys.stdout
+                        sys.stdout = buffer = io.StringIO()
+                        # Print the output to the console (this will be captured)
+                        Mymodel.EQI(beta=beta, tao_new=tao_new)
+                        # Restore the original stdout
+                        sys.stdout = old_stdout
+                        captured_output = buffer.getvalue()
+                        buffer.close()
+                        self.resultWindow.resultTextEdit.append(captured_output)
+                    if self.single_object_parameters_setting['function'] == 'Reinterpolation_EI':
+                        self.resultWindow.show()
+                        # Capture the output
+                        old_stdout = sys.stdout
+                        sys.stdout = buffer = io.StringIO()
+                        # Print the output to the console (this will be captured)
+                        Mymodel.Reinterpolation_EI()
+                        # Restore the original stdout
+                        sys.stdout = old_stdout
+                        captured_output = buffer.getvalue()
+                        buffer.close()
+                        self.resultWindow.resultTextEdit.append(captured_output)
+                    if self.single_object_parameters_setting['function'] == 'UCB':
+                        self.resultWindow.show()
+                        alpha = int(self.single_object_parameters_setting['parameter1'])
+                        # Capture the output
+                        old_stdout = sys.stdout
+                        sys.stdout = buffer = io.StringIO()
+                        # Print the output to the console (this will be captured)
+                        Mymodel.UCB(alpha=alpha)
+                        # Restore the original stdout
+                        sys.stdout = old_stdout
+                        captured_output = buffer.getvalue()
+                        buffer.close()
+                        self.resultWindow.resultTextEdit.append(captured_output)
+                    if self.single_object_parameters_setting['function'] == 'PoI':
+                        self.resultWindow.show()
+                        tao = float(self.single_object_parameters_setting['parameter1'])
+                        # Capture the output
+                        old_stdout = sys.stdout
+                        sys.stdout = buffer = io.StringIO()
+                        # Print the output to the console (this will be captured)
+                        Mymodel.PoI(tao=tao)
+                        # Restore the original stdout
+                        sys.stdout = old_stdout
+                        captured_output = buffer.getvalue()
+                        buffer.close()
+                        self.resultWindow.resultTextEdit.append(captured_output)
+                    if self.single_object_parameters_setting['function'] == 'PES':
+                        self.resultWindow.show()
+                        sam_num = int(self.single_object_parameters_setting['parameter1'])
+                        # Capture the output
+                        old_stdout = sys.stdout
+                        sys.stdout = buffer = io.StringIO()
+                        # Print the output to the console (this will be captured)
+                        Mymodel.PES(sam_num=sam_num)
+                        # Restore the original stdout
+                        sys.stdout = old_stdout
+                        captured_output = buffer.getvalue()
+                        buffer.close()
+                        self.resultWindow.resultTextEdit.append(captured_output)
+                    if self.single_object_parameters_setting['function'] == 'Knowledge_G':
+                        self.resultWindow.show()
+                        MC_num = int(self.single_object_parameters_setting['parameter1'])
+                        # Capture the output
+                        old_stdout = sys.stdout
+                        sys.stdout = buffer = io.StringIO()
+                        # Print the output to the console (this will be captured)
+                        Mymodel.Knowledge_G(MC_num=MC_num)
+                        # Restore the original stdout
+                        sys.stdout = old_stdout
+                        captured_output = buffer.getvalue()
+                        buffer.close()
+                        self.resultWindow.resultTextEdit.append(captured_output)
+                else:
+                    opt_num = self.single_object_parameters_setting['opt_num']
+
+                    classifier = self.single_object_parameters_setting['classifier']
+                    Dynamic_W = self.single_object_parameters_setting['Dynamic_W']
+
                     # Capture the output
                     old_stdout = sys.stdout
                     sys.stdout = buffer = io.StringIO()
                     # Print the output to the console (this will be captured)
-                    Mymodel.Margin_S()
+                    Mymodel = Bgolearn.fit(data_matrix=x, Measured_response=y, virtual_samples=self.virtual_sample, Mission='Classification', Classifier=classifier,opt_num=opt_num, Dynamic_W=Dynamic_W)
                     # Restore the original stdout
                     sys.stdout = old_stdout
                     captured_output = buffer.getvalue()
                     buffer.close()
                     self.resultWindow.resultTextEdit.append(captured_output)
-                if self.parameters_setting['function'] == 'Entropy':
-                    self.resultWindow.show()
-                    # Capture the output
-                    old_stdout = sys.stdout
-                    sys.stdout = buffer = io.StringIO()
-                    # Print the output to the console (this will be captured)
-                    Mymodel.Entropy()
-                    # Restore the original stdout
-                    sys.stdout = old_stdout
-                    captured_output = buffer.getvalue()
-                    buffer.close()
-                    self.resultWindow.resultTextEdit.append(captured_output)
-        except Exception as e:
-            self.show_error_message(str(e))
+
+                    if self.single_object_parameters_setting['function'] == 'Least_cfd':
+                        self.resultWindow.show()
+                        # Capture the output
+                        old_stdout = sys.stdout
+                        sys.stdout = buffer = io.StringIO()
+                        # Print the output to the console (this will be captured)
+                        Mymodel.Least_cfd()
+                        # Restore the original stdout
+                        sys.stdout = old_stdout
+                        captured_output = buffer.getvalue()
+                        buffer.close()
+                        self.resultWindow.resultTextEdit.append(captured_output)
+                    if self.single_object_parameters_setting['function'] == 'Margin_S':
+                        self.resultWindow.show()
+                        # Capture the output
+                        old_stdout = sys.stdout
+                        sys.stdout = buffer = io.StringIO()
+                        # Print the output to the console (this will be captured)
+                        Mymodel.Margin_S()
+                        # Restore the original stdout
+                        sys.stdout = old_stdout
+                        captured_output = buffer.getvalue()
+                        buffer.close()
+                        self.resultWindow.resultTextEdit.append(captured_output)
+                    if self.single_object_parameters_setting['function'] == 'Entropy':
+                        self.resultWindow.show()
+                        # Capture the output
+                        old_stdout = sys.stdout
+                        sys.stdout = buffer = io.StringIO()
+                        # Print the output to the console (this will be captured)
+                        Mymodel.Entropy()
+                        # Restore the original stdout
+                        sys.stdout = old_stdout
+                        captured_output = buffer.getvalue()
+                        buffer.close()
+                        self.resultWindow.resultTextEdit.append(captured_output)
+            except Exception as e:
+                self.show_error_message(str(e))
 
     def show_error_message(self, message):
         msg_box = QMessageBox()
@@ -626,10 +679,12 @@ class LoadWindow(QMainWindow, Ui_LoadWindow):
                 file_contents = {
                     'training_sample': {
                         'training_sample_file': self.training_sample_file,
+                        'training_sample_file_path': self.trainingSampleFileName.text(),
                         'training_sample_file_extension': self.training_sample_file_extension
                     },
                     'virtual_sample': {
                         'virtual_sample_file': self.virtual_sample_file,
+                        'virtual_sample_file_path': self.virtualSampleFileName.text(),
                         'virtual_sample_file_extension': self.virtual_sample_file_extension
                     }
                 }
@@ -695,7 +750,6 @@ class ShowWindow(QMainWindow, Ui_ShowWindow):
         self.exportButton.clicked.connect(self.open_export_window)
         self.trainingSampleGraphicsView.setScene(self.scene_element)
 
-
         self.buttonGroup = None
         self.training_sample = {}
         self.elements = []
@@ -705,7 +759,6 @@ class ShowWindow(QMainWindow, Ui_ShowWindow):
         if self.training_sample is not None:
             self.show_training_sample()
             self.first_element_checked()
-
 
     def open_export_window(self):
         if self.training_sample is None:
@@ -1089,14 +1142,13 @@ class ResultWindow(QMainWindow, Ui_ResultWindow):
         self.setupUi(self)
         self.setWindowTitle('Result')
 
-
-class ParameterWindow(QMainWindow, Ui_ParameterWindow):
-    parameters_uploaded = pyqtSignal(dict)
+class SingleObjectParameterWindow(QMainWindow, Ui_SingleObjectParameterWindow):
+    single_object_parameters_uploaded = pyqtSignal(dict)
 
     def __init__(self):
-        super(ParameterWindow, self).__init__()
+        super(SingleObjectParameterWindow, self).__init__()
         self.setupUi(self)
-        self.setWindowTitle("Parameter")
+        self.setWindowTitle("Single Object Parameter")
 
         # 子窗口
         self.contrastWindow = ContrastWindow()
@@ -1168,7 +1220,6 @@ class ParameterWindow(QMainWindow, Ui_ParameterWindow):
 
         self.setting = {}
         self.initialize()
-
 
         self.regressionRadioButton.clicked.connect(self.switch_tab_module)
         self.classificationRadioButton.clicked.connect(self.switch_tab_module)
@@ -1322,7 +1373,7 @@ class ParameterWindow(QMainWindow, Ui_ParameterWindow):
             self.setting['opt_num'] = self.classification_opt_num_SpinBox.value()
             self.setting['Dynamic_W'] = self.classification_Dynamic_W_TrueRadioButton.isChecked()
             self.setting['function'] = self.classificationFunctionComboBox.currentText()
-        self.parameters_uploaded.emit(self.setting)
+        self.single_object_parameters_uploaded.emit(self.setting)
         self.close()
 
     def reset_parameters(self):
@@ -1358,8 +1409,78 @@ class ParameterWindow(QMainWindow, Ui_ParameterWindow):
         self.contrastWindow.show()
         self.contrastWindow.plot_contrast()
 
+class MultipleObjectsParameterWindow(QMainWindow, Ui_MultipleObjectsParameterWindow):
+    multiple_objects_parameters_uploaded = pyqtSignal(dict)
 
+    def __init__(self):
+        super(MultipleObjectsParameterWindow, self).__init__()
+        self.setupUi(self)
+        self.setWindowTitle("Multiple Objects Parameter")
 
+        # 变量
+        self.training_sample = None
+        self.multiple_objects_default_setting = {
+            'object_num': 2,
+            'max_search': True,
+            'bootstrap': 5,
+            'assign_model': ['RandomForest', 'GradientBoosting', 'LinearRegression', 'Lasso', 'Ridge', 'SVR', 'GaussianProcess'],
+            'method': {
+                'UCB': 'Upper Confidence Bound',
+                'EHVI': 'Expected Hypervolume Improvement',
+                'PI': 'Probability of Improvement'
+            }
+        }
+
+        self.setting = {}
+        self.initialize()
+
+        self.multiple_objects_method_ComboBox.currentIndexChanged.connect(self.change_multiple_objects_method)
+        self.setParametersButton.clicked.connect(self.set_parameters)
+        self.resetParametersButton.clicked.connect(self.reset_parameters)
+
+    # 初始化
+    def initialize(self):
+        self.multiple_objects_num_SpinBox.setValue(self.multiple_objects_default_setting['object_num'])
+        self.multiple_objects_bootstrap_SpinBox.setValue(self.multiple_objects_default_setting['bootstrap'])
+        self.multiple_objects_assign_model_ComboBox.addItems(self.multiple_objects_default_setting['assign_model'])
+        if self.multiple_objects_default_setting['max_search']:
+            self.multiple_objects_min_search_FalseRadioButton.setChecked(True)
+        else:
+            self.multiple_objects_min_search_TrueRadioButton.setChecked(False)
+        self.multiple_objects_method_ComboBox.addItems(self.multiple_objects_default_setting['method'].keys())
+        self.multipleObjectsMethodNameLabel.setText(self.multiple_objects_default_setting['method']['UCB'])
+
+    def get_training_sample(self, training_sample):
+        self.training_sample = training_sample
+
+    def change_multiple_objects_method(self):
+        if self.multiple_objects_method_ComboBox.currentText() == 'UCB':
+            self.multipleObjectsMethodNameLabel.setText(self.multiple_objects_default_setting['method']['UCB'])
+        elif self.multiple_objects_method_ComboBox.currentText() == 'EHVI':
+            self.multipleObjectsMethodNameLabel.setText(self.multiple_objects_default_setting['method']['EHVI'])
+        elif self.multiple_objects_method_ComboBox.currentText() == 'PI':
+            self.multipleObjectsMethodNameLabel.setText(self.multiple_objects_default_setting['method']['PI'])
+
+    def set_parameters(self):
+        self.setting['object_num'] = self.multiple_objects_num_SpinBox.value()
+        self.setting['max_search'] = self.multiple_objects_min_search_FalseRadioButton.isChecked()
+        self.setting['bootstrap'] = self.multiple_objects_bootstrap_SpinBox.value()
+        self.setting['assign_model'] = str(self.multiple_objects_assign_model_ComboBox.currentText())
+        self.setting['method'] = str(self.multiple_objects_method_ComboBox.currentText())
+
+        self.multiple_objects_parameters_uploaded.emit(self.setting)
+        self.close()
+
+    def reset_parameters(self):
+        self.multiple_objects_num_SpinBox.setValue(self.multiple_objects_default_setting['object_num'])
+        if self.multiple_objects_default_setting['max_search']:
+            self.multiple_objects_min_search_FalseRadioButton.setChecked(True)
+        else:
+            self.multiple_objects_min_search_TrueRadioButton.setChecked(True)
+        self.multiple_objects_bootstrap_SpinBox.setValue(self.multiple_objects_default_setting['bootstrap'])
+        self.multiple_objects_assign_model_ComboBox.setCurrentIndex(0)
+        self.multiple_objects_method_ComboBox.setCurrentIndex(0)
+        self.multipleObjectsMethodNameLabel.setText(self.multiple_objects_default_setting['method']['UCB'])
 
 class ContrastWindow(QMainWindow, Ui_ContrastWindow):
     def __init__(self):
@@ -1378,8 +1499,6 @@ class ContrastWindow(QMainWindow, Ui_ContrastWindow):
         self.regressionContrastGraphicsView.setScene(self.scene_contrast)
         self.saveRegressionContrastButton.clicked.connect(self.open_save_window)
 
-
-
     def get_training_sample(self, training_sample):
         self.training_sample = training_sample
 
@@ -1393,10 +1512,6 @@ class ContrastWindow(QMainWindow, Ui_ContrastWindow):
     def open_save_window(self):
         self.saveWindow.get_training_sample(self.training_sample)
         self.saveWindow.show()
-
-
-
-
 
     def pre_scatter(self):
         data = self.training_sample

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1359</width>
+    <width>1352</width>
     <height>971</height>
    </rect>
   </property>
@@ -77,9 +77,9 @@
    <widget class="QGroupBox" name="virtualSampleModuleGroupBox">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>140</x>
       <y>130</y>
-      <width>251</width>
+      <width>141</width>
       <height>101</height>
      </rect>
     </property>
@@ -97,7 +97,7 @@
       <rect>
        <x>10</x>
        <y>30</y>
-       <width>141</width>
+       <width>91</width>
        <height>63</height>
       </rect>
      </property>
@@ -777,13 +777,64 @@
      <string/>
     </property>
    </widget>
+   <widget class="QGroupBox" name="objectModuleGroupBox">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>130</y>
+      <width>121</width>
+      <height>101</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Object</string>
+    </property>
+    <widget class="QWidget" name="">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>101</width>
+       <height>63</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QRadioButton" name="singleObjectRadioButton">
+        <property name="font">
+         <font>
+          <family>Microsoft YaHei</family>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Single</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="multipleObjectRadioButton">
+        <property name="font">
+         <font>
+          <family>Microsoft YaHei</family>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Multiple</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1359</width>
+     <width>1352</width>
      <height>29</height>
     </rect>
    </property>
@@ -791,17 +842,19 @@
     <property name="title">
      <string>Setting</string>
     </property>
-    <addaction name="actionParameter"/>
+    <addaction name="actionSingleObjectParameter"/>
+    <addaction name="actionMultipleObjectParameter"/>
    </widget>
    <addaction name="menuSetting"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="actionParameter">
+  <action name="actionSingleObjectParameter">
    <property name="text">
-    <string>Parameter</string>
+    <string>Single-Object</string>
    </property>
    <property name="font">
     <font>
+     <family>Microsoft YaHei</family>
      <pointsize>10</pointsize>
     </font>
    </property>
@@ -809,6 +862,17 @@
   <action name="actionExport">
    <property name="text">
     <string>Export</string>
+   </property>
+  </action>
+  <action name="actionMultipleObjectParameter">
+   <property name="text">
+    <string>Multiple-Object</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Microsoft YaHei</family>
+     <pointsize>10</pointsize>
+    </font>
    </property>
   </action>
  </widget>

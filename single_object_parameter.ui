@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ParameterWindow</class>
- <widget class="QMainWindow" name="ParameterWindow">
+ <class>SingleObjectParameterWindow</class>
+ <widget class="QMainWindow" name="SingleObjectParameterWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -364,7 +364,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
         <x>10</x>
