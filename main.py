@@ -68,6 +68,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.load_image()
         self.citation1Label.setText('<a href="https://doi.org/10.1016/j.matdes.2024.112921">https://doi.org/10.1016/j.matdes.2024.112921</a>')
         self.citation2Label.setText('<a href="https://doi.org/10.1038/s41524-024-01243-4">https://doi.org/10.1038/s41524-024-01243-4</a>')
+        self.singleObjectRadioButton.clicked.connect(self.adjust_virtual_sample_method)
+        self.multipleObjectRadioButton.clicked.connect(self.adjust_virtual_sample_method)
         self.loadTrainingSampleButton.clicked.connect(self.open_load_window)
         self.plotButton.clicked.connect(self.open_show_window)
         self.resultButton.clicked.connect(self.open_result_window)
@@ -222,6 +224,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             return
         self.downloadWindow.get_virtual_sample(self.virtual_sample)
         self.downloadWindow.show()
+
+    def adjust_virtual_sample_method(self):
+        if self.singleObjectRadioButton.isChecked():
+            self.manualVirtualSampleRadioButton.setDisabled(False)
+        else:
+            self.manualVirtualSampleRadioButton.setDisabled(True)
+
 
     def open_single_object_parameter_window(self):
         if self.multipleObjectRadioButton.isChecked():
@@ -697,6 +706,7 @@ class LoadWindow(QMainWindow, Ui_LoadWindow):
                 file_contents = {
                     'training_sample': {
                         'training_sample_file': self.training_sample_file,
+                        'training_sample_file_path': self.trainingSampleFileName.text(),
                         'training_sample_file_extension': self.training_sample_file_extension
                     }
                 }
