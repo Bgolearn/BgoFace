@@ -55,6 +55,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         super(MainWindow, self).__init__()
         self.setupUi(self)
         self.setWindowTitle('BgoFace')
+        self.setMinimumSize(1352, 971)
+        self.setMaximumSize(1352, 971)
 
         # 子窗口
         self.loadWindow = LoadWindow()
@@ -622,6 +624,8 @@ class LoadWindow(QMainWindow, Ui_LoadWindow):
         super(LoadWindow, self).__init__()
         self.setupUi(self)
         self.setWindowTitle('Load')
+        self.setMinimumSize(800, 244)
+        self.setMaximumSize(800, 244)
         self.browseTrainingSampleButton.clicked.connect(self.upload_training_sample_file)
         self.browseVirtualSampleButton.clicked.connect(self.upload_virtual_sample_file)
         self.loadButton.clicked.connect(self.upload_file)
@@ -720,6 +724,8 @@ class DownloadWindow(QMainWindow, Ui_DownloadWindow):
         super(DownloadWindow, self).__init__()
         self.setupUi(self)
         self.setWindowTitle('Download')
+        self.setMinimumSize(800, 200)
+        self.setMaximumSize(800, 200)
 
         self.browseDownloadVirtualSampleFileButton.clicked.connect(self.browse_download_path)
         self.okDownloadButton.clicked.connect(self.download_file)
@@ -752,6 +758,8 @@ class ShowWindow(QMainWindow, Ui_ShowWindow):
         super(ShowWindow, self).__init__()
         self.setupUi(self)
         self.setWindowTitle('Show')
+        self.setMinimumSize(1132, 516)
+        self.setMaximumSize(1132, 516)
 
         self.exportWindow = ExportWindow()
 
@@ -973,6 +981,8 @@ class ExportWindow(QMainWindow, Ui_ExportWindow):
         super(ExportWindow, self).__init__()
         self.setupUi(self)
         self.setWindowTitle('Export')
+        self.setMinimumSize(800, 200)
+        self.setMaximumSize(800, 200)
 
         self.browseExportTrainingSampleFileButton.clicked.connect(self.browse_export_path)
         self.okExportButton.clicked.connect(self.export)
@@ -1151,6 +1161,8 @@ class ResultWindow(QMainWindow, Ui_ResultWindow):
         super(ResultWindow, self).__init__()
         self.setupUi(self)
         self.setWindowTitle('Result')
+        self.setMinimumSize(881, 517)
+        self.setMaximumSize(881, 517)
 
 class SingleObjectParameterWindow(QMainWindow, Ui_SingleObjectParameterWindow):
     single_object_parameters_uploaded = pyqtSignal(dict)
@@ -1159,6 +1171,8 @@ class SingleObjectParameterWindow(QMainWindow, Ui_SingleObjectParameterWindow):
         super(SingleObjectParameterWindow, self).__init__()
         self.setupUi(self)
         self.setWindowTitle("Single Object Parameter")
+        self.setMinimumSize(905, 603)
+        self.setMaximumSize(905, 603)
 
         # 子窗口
         self.contrastWindow = ContrastWindow()
@@ -1426,6 +1440,8 @@ class MultipleObjectsParameterWindow(QMainWindow, Ui_MultipleObjectsParameterWin
         super(MultipleObjectsParameterWindow, self).__init__()
         self.setupUi(self)
         self.setWindowTitle("Multiple Objects Parameter")
+        self.setMinimumSize(905, 328)
+        self.setMaximumSize(905, 328)
 
         # 变量
         self.training_sample = None
@@ -1497,6 +1513,8 @@ class ContrastWindow(QMainWindow, Ui_ContrastWindow):
         super(ContrastWindow, self).__init__()
         self.setupUi(self)
         self.setWindowTitle("Pred v.s. Label")
+        self.setMinimumSize(605, 541)
+        self.setMaximumSize(605, 541)
 
         # 子窗口
         self.saveWindow = SaveWindow()
@@ -1597,6 +1615,8 @@ class SaveWindow(QMainWindow, Ui_SaveWindow):
         super(SaveWindow, self).__init__()
         self.setupUi(self)
         self.setWindowTitle('Save')
+        self.setMinimumSize(800, 200)
+        self.setMaximumSize(800, 200)
 
         self.browseDownloadContrastPictureButton.clicked.connect(self.browse_save_path)
         self.okDownloadButton.clicked.connect(self.save)
