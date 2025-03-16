@@ -173,6 +173,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.selected_sample_data.pop(element)
         self.selected_elements = self.reorder_list_by_reference(self.elements, self.selected_elements)
         self.nameComboBox.clear()
+        self.selected_elements = list(map(str, self.selected_elements))
         self.nameComboBox.addItems(self.selected_elements)
 
     def reorder_list_by_reference(self, ref_list, target_list):
@@ -190,6 +191,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # 定义元素列表
         self.elements = list(self.training_sample.columns)
+        self.elements = list(map(str, self.elements))
         # 用于存储选中的QCheckBox
         self.selected_elements = self.elements.copy()
         self.selected_elements.pop()
@@ -315,7 +317,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def get_training_sample_data(self, training_sample):
         self.sample_data = {}
         self.selected_sample_data = {}
-        training_sample_dict = training_sample.to_dict(orient='list')
+        training_sample_dict = {str(key): value for key, value in training_sample.to_dict(orient='list').items()}
+
         for key, value in training_sample_dict.items():
             dataset = {'data': value, 'minimum': min(value), 'maximum': max(value), 'step': 0}
             self.sample_data[key] = dataset
@@ -687,37 +690,40 @@ class LoadWindow(QMainWindow, Ui_LoadWindow):
                 self.statusBar().showMessage(f'File processing failed: {e}', 3000)
 
     def upload_file(self):
-        if self.label_2.isVisible():
-            if self.training_sample_file is not None and self.virtual_sample_file is not None:
-                file_contents = {
-                    'training_sample': {
-                        'training_sample_file': self.training_sample_file,
-                        'training_sample_file_path': self.trainingSampleFileName.text(),
-                        'training_sample_file_extension': self.training_sample_file_extension
-                    },
-                    'virtual_sample': {
-                        'virtual_sample_file': self.virtual_sample_file,
-                        'virtual_sample_file_path': self.virtualSampleFileName.text(),
-                        'virtual_sample_file_extension': self.virtual_sample_file_extension
+        try:
+            if self.label_2.isVisible():
+                if self.training_sample_file is not None and self.virtual_sample_file is not None:
+                    file_contents = {
+                        'training_sample': {
+                            'training_sample_file': self.training_sample_file,
+                            'training_sample_file_path': self.trainingSampleFileName.text(),
+                            'training_sample_file_extension': self.training_sample_file_extension
+                        },
+                        'virtual_sample': {
+                            'virtual_sample_file': self.virtual_sample_file,
+                            'virtual_sample_file_path': self.virtualSampleFileName.text(),
+                            'virtual_sample_file_extension': self.virtual_sample_file_extension
+                        }
                     }
-                }
-                self.files_uploaded.emit(file_contents)
-                self.close()
+                    self.files_uploaded.emit(file_contents)
+                    self.close()
+                else:
+                    self.statusBar().showMessage("Please upload two suitable files first！", 3000)
             else:
-                self.statusBar().showMessage("Please upload two suitable files first！", 3000)
-        else:
-            if self.training_sample_file is not None:
-                file_contents = {
-                    'training_sample': {
-                        'training_sample_file': self.training_sample_file,
-                        'training_sample_file_path': self.trainingSampleFileName.text(),
-                        'training_sample_file_extension': self.training_sample_file_extension
+                if self.training_sample_file is not None:
+                    file_contents = {
+                        'training_sample': {
+                            'training_sample_file': self.training_sample_file,
+                            'training_sample_file_path': self.trainingSampleFileName.text(),
+                            'training_sample_file_extension': self.training_sample_file_extension
+                        }
                     }
-                }
-                self.files_uploaded.emit(file_contents)
-                self.close()
-            else:
-                self.statusBar().showMessage("Please upload suitable file first！", 3000)
+                    self.files_uploaded.emit(file_contents)
+                    self.close()
+                else:
+                    self.statusBar().showMessage("Please upload suitable file first！", 3000)
+        except Exception as e:
+            self.show_error_message(str(e))
 
 class DownloadWindow(QMainWindow, Ui_DownloadWindow):
     def __init__(self):
