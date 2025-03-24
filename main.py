@@ -10,8 +10,8 @@ import Bgolearn.BGOsampling as BGOS
 from MultiBgolearn import bgo
 from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog, QMessageBox, QHeaderView, QCheckBox, QVBoxLayout, \
-    QWidget, QRadioButton, QButtonGroup, QGraphicsScene, QHBoxLayout
-from PyQt5.QtGui import QStandardItemModel, QStandardItem, QPixmap
+    QWidget, QRadioButton, QButtonGroup, QGraphicsScene
+from PyQt5.QtGui import QStandardItemModel, QStandardItem, QPixmap, QIcon
 from matplotlib import pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from sklearn.gaussian_process import GaussianProcessRegressor
@@ -55,8 +55,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         super(MainWindow, self).__init__()
         self.setupUi(self)
         self.setWindowTitle('BgoFace')
-        self.setMinimumSize(1352, 971)
-        self.setMaximumSize(1352, 971)
+        self.setMinimumSize(1352, 857)
+        self.setMaximumSize(1352, 857)
+        self.setWindowIcon(QIcon("Images/BgoFace.ico"))
 
         # 子窗口
         self.loadWindow = LoadWindow()
@@ -69,7 +70,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # 函数
         self.load_image()
         self.citation1Label.setText('<a href="https://doi.org/10.1016/j.matdes.2024.112921">https://doi.org/10.1016/j.matdes.2024.112921</a>')
+        self.citation1Label.setOpenExternalLinks(True)
         self.citation2Label.setText('<a href="https://doi.org/10.1038/s41524-024-01243-4">https://doi.org/10.1038/s41524-024-01243-4</a>')
+        self.citation2Label.setOpenExternalLinks(True)
+        self.citation3Label.setText('<a href="http://bgolearn.caobin.asia">http://bgolearn.caobin.asia</a>')
+        self.citation3Label.setOpenExternalLinks(True)
         self.singleObjectRadioButton.clicked.connect(self.adjust_virtual_sample_method)
         self.multipleObjectRadioButton.clicked.connect(self.adjust_virtual_sample_method)
         self.loadTrainingSampleButton.clicked.connect(self.open_load_window)
@@ -126,27 +131,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         pixmap = QPixmap(file_path)
         scaled_pixmap = pixmap.scaled(self.BgoLearnLabel.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
         self.BgoLearnLabel.setPixmap(scaled_pixmap)
-        file_path = self.resource_path('Images/BUCT.png')
+        file_path = self.resource_path('Images/BgoFace.png')
         pixmap = QPixmap(file_path)
-        scaled_pixmap = pixmap.scaled(self.BUCTLabel.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
-        self.BUCTLabel.setPixmap(scaled_pixmap)
-        file_path = self.resource_path('Images/NEU.png')
-        pixmap = QPixmap(file_path)
-        scaled_pixmap = pixmap.scaled(self.NEULabel.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
-        self.NEULabel.setPixmap(scaled_pixmap)
-        file_path = self.resource_path('Images/SHU.png')
-        pixmap = QPixmap(file_path)
-        scaled_pixmap = pixmap.scaled(self.SHULabel.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
-        self.SHULabel.setPixmap(scaled_pixmap)
-        file_path = self.resource_path('Images/TJU.png')
-        pixmap = QPixmap(file_path)
-        scaled_pixmap = pixmap.scaled(self.TJULabel.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
-        self.TJULabel.setPixmap(scaled_pixmap)
-        file_path = self.resource_path('Images/ZJLab.png')
-        pixmap = QPixmap(file_path)
-        scaled_pixmap = pixmap.scaled(self.ZJLabLabel.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
-        self.ZJLabLabel.setPixmap(scaled_pixmap)
-
+        scaled_pixmap = pixmap.scaled(self.BgoFaceLabel.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        self.BgoFaceLabel.setPixmap(scaled_pixmap)
 
     def resource_path(self, relative_path):
         """ 获取资源文件的绝对路径 """
@@ -629,6 +617,7 @@ class LoadWindow(QMainWindow, Ui_LoadWindow):
         self.setWindowTitle('Load')
         self.setMinimumSize(800, 244)
         self.setMaximumSize(800, 244)
+        self.setWindowIcon(QIcon("Images/BgoFace.ico"))
         self.browseTrainingSampleButton.clicked.connect(self.upload_training_sample_file)
         self.browseVirtualSampleButton.clicked.connect(self.upload_virtual_sample_file)
         self.loadButton.clicked.connect(self.upload_file)
@@ -732,7 +721,7 @@ class DownloadWindow(QMainWindow, Ui_DownloadWindow):
         self.setWindowTitle('Download')
         self.setMinimumSize(800, 200)
         self.setMaximumSize(800, 200)
-
+        self.setWindowIcon(QIcon("Images/BgoFace.ico"))
         self.browseDownloadVirtualSampleFileButton.clicked.connect(self.browse_download_path)
         self.okDownloadButton.clicked.connect(self.download_file)
         self.cancelDownloadButton.clicked.connect(self.close)
@@ -766,7 +755,7 @@ class ShowWindow(QMainWindow, Ui_ShowWindow):
         self.setWindowTitle('Show')
         self.setMinimumSize(1132, 516)
         self.setMaximumSize(1132, 516)
-
+        self.setWindowIcon(QIcon("Images/BgoFace.ico"))
         self.exportWindow = ExportWindow()
 
         # 创建QGraphicsScene
@@ -989,7 +978,7 @@ class ExportWindow(QMainWindow, Ui_ExportWindow):
         self.setWindowTitle('Export')
         self.setMinimumSize(800, 200)
         self.setMaximumSize(800, 200)
-
+        self.setWindowIcon(QIcon("Images/BgoFace.ico"))
         self.browseExportTrainingSampleFileButton.clicked.connect(self.browse_export_path)
         self.okExportButton.clicked.connect(self.export)
         self.cancelExportButton.clicked.connect(self.close)
@@ -1169,6 +1158,7 @@ class ResultWindow(QMainWindow, Ui_ResultWindow):
         self.setWindowTitle('Result')
         self.setMinimumSize(881, 517)
         self.setMaximumSize(881, 517)
+        self.setWindowIcon(QIcon("Images/BgoFace.ico"))
 
 class SingleObjectParameterWindow(QMainWindow, Ui_SingleObjectParameterWindow):
     single_object_parameters_uploaded = pyqtSignal(dict)
@@ -1179,6 +1169,7 @@ class SingleObjectParameterWindow(QMainWindow, Ui_SingleObjectParameterWindow):
         self.setWindowTitle("Single Object Parameter")
         self.setMinimumSize(905, 603)
         self.setMaximumSize(905, 603)
+        self.setWindowIcon(QIcon("Images/BgoFace.ico"))
 
         # 子窗口
         self.contrastWindow = ContrastWindow()
@@ -1448,6 +1439,7 @@ class MultipleObjectsParameterWindow(QMainWindow, Ui_MultipleObjectsParameterWin
         self.setWindowTitle("Multiple Objects Parameter")
         self.setMinimumSize(905, 328)
         self.setMaximumSize(905, 328)
+        self.setWindowIcon(QIcon("Images/BgoFace.ico"))
 
         # 变量
         self.training_sample = None
@@ -1521,6 +1513,7 @@ class ContrastWindow(QMainWindow, Ui_ContrastWindow):
         self.setWindowTitle("Pred v.s. Label")
         self.setMinimumSize(605, 541)
         self.setMaximumSize(605, 541)
+        self.setWindowIcon(QIcon("Images/BgoFace.ico"))
 
         # 子窗口
         self.saveWindow = SaveWindow()
@@ -1623,6 +1616,7 @@ class SaveWindow(QMainWindow, Ui_SaveWindow):
         self.setWindowTitle('Save')
         self.setMinimumSize(800, 200)
         self.setMaximumSize(800, 200)
+        self.setWindowIcon(QIcon("Images/BgoFace.ico"))
 
         self.browseDownloadContrastPictureButton.clicked.connect(self.browse_save_path)
         self.okDownloadButton.clicked.connect(self.save)

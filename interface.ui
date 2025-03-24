@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1352</width>
-    <height>971</height>
+    <height>857</height>
    </rect>
   </property>
   <property name="font">
@@ -663,120 +663,6 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="label_11">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>784</y>
-      <width>171</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Microsoft YaHei</family>
-      <pointsize>10</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Cooperate partners:</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="BUCTLabel">
-    <property name="geometry">
-     <rect>
-      <x>21</x>
-      <y>810</y>
-      <width>90</width>
-      <height>90</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Microsoft YaHei</family>
-      <pointsize>10</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QLabel" name="NEULabel">
-    <property name="geometry">
-     <rect>
-      <x>190</x>
-      <y>810</y>
-      <width>90</width>
-      <height>90</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Microsoft YaHei</family>
-      <pointsize>10</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QLabel" name="SHULabel">
-    <property name="geometry">
-     <rect>
-      <x>370</x>
-      <y>810</y>
-      <width>90</width>
-      <height>90</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Microsoft YaHei</family>
-      <pointsize>10</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QLabel" name="TJULabel">
-    <property name="geometry">
-     <rect>
-      <x>540</x>
-      <y>810</y>
-      <width>90</width>
-      <height>90</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Microsoft YaHei</family>
-      <pointsize>10</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QLabel" name="ZJLabLabel">
-    <property name="geometry">
-     <rect>
-      <x>740</x>
-      <y>810</y>
-      <width>90</width>
-      <height>90</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Microsoft YaHei</family>
-      <pointsize>10</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
    <widget class="QGroupBox" name="objectModuleGroupBox">
     <property name="geometry">
      <rect>
@@ -789,7 +675,7 @@
     <property name="title">
      <string>Object</string>
     </property>
-    <widget class="QWidget" name="">
+    <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -827,6 +713,63 @@
       </item>
      </layout>
     </widget>
+   </widget>
+   <widget class="QLabel" name="label_13">
+    <property name="geometry">
+     <rect>
+      <x>21</x>
+      <y>771</y>
+      <width>101</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>HomePage : </string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="citation3Label">
+    <property name="geometry">
+     <rect>
+      <x>129</x>
+      <y>771</y>
+      <width>231</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>http://bgolearn.caobin.asia</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="BgoFaceLabel">
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>10</y>
+      <width>184</width>
+      <height>115</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
