@@ -57,7 +57,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setWindowTitle('BgoFace')
         self.setMinimumSize(1352, 857)
         self.setMaximumSize(1352, 857)
-        self.setWindowIcon(QIcon("Images/BgoFace.ico"))
+        self.setWindowIcon(QIcon(self.resource_path("Images/BgoFace.ico")))
 
         # 子窗口
         self.loadWindow = LoadWindow()
@@ -617,7 +617,7 @@ class LoadWindow(QMainWindow, Ui_LoadWindow):
         self.setWindowTitle('Load')
         self.setMinimumSize(800, 244)
         self.setMaximumSize(800, 244)
-        self.setWindowIcon(QIcon("Images/BgoFace.ico"))
+        self.setWindowIcon(QIcon(self.resource_path("Images/BgoFace.ico")))
         self.browseTrainingSampleButton.clicked.connect(self.upload_training_sample_file)
         self.browseVirtualSampleButton.clicked.connect(self.upload_virtual_sample_file)
         self.loadButton.clicked.connect(self.upload_file)
@@ -627,6 +627,16 @@ class LoadWindow(QMainWindow, Ui_LoadWindow):
         self.training_sample_file_extension = None
         self.virtual_sample_file = None
         self.virtual_sample_file_extension = None
+
+    def resource_path(self, relative_path):
+        """ 获取资源文件的绝对路径 """
+        try:
+            # PyInstaller创建临时文件夹，并把路径存储在_MEIPASS中
+            base_path = sys._MEIPASS
+        except Exception:
+            base_path = os.path.abspath(".")
+
+        return os.path.join(base_path, relative_path)
 
     def upload_training_sample_file(self):
         options = QFileDialog.Options()
@@ -721,13 +731,23 @@ class DownloadWindow(QMainWindow, Ui_DownloadWindow):
         self.setWindowTitle('Download')
         self.setMinimumSize(800, 200)
         self.setMaximumSize(800, 200)
-        self.setWindowIcon(QIcon("Images/BgoFace.ico"))
+        self.setWindowIcon(QIcon(self.resource_path("Images/BgoFace.ico")))
         self.browseDownloadVirtualSampleFileButton.clicked.connect(self.browse_download_path)
         self.okDownloadButton.clicked.connect(self.download_file)
         self.cancelDownloadButton.clicked.connect(self.close)
 
         self.download_virtual_sample_file_path = None
         self.virtual_sample = None
+
+    def resource_path(self, relative_path):
+        """ 获取资源文件的绝对路径 """
+        try:
+            # PyInstaller创建临时文件夹，并把路径存储在_MEIPASS中
+            base_path = sys._MEIPASS
+        except Exception:
+            base_path = os.path.abspath(".")
+
+        return os.path.join(base_path, relative_path)
 
     def browse_download_path(self):
         options = QFileDialog.Options()
@@ -755,7 +775,7 @@ class ShowWindow(QMainWindow, Ui_ShowWindow):
         self.setWindowTitle('Show')
         self.setMinimumSize(1132, 516)
         self.setMaximumSize(1132, 516)
-        self.setWindowIcon(QIcon("Images/BgoFace.ico"))
+        self.setWindowIcon(QIcon(self.resource_path("Images/BgoFace.ico")))
         self.exportWindow = ExportWindow()
 
         # 创建QGraphicsScene
@@ -766,6 +786,16 @@ class ShowWindow(QMainWindow, Ui_ShowWindow):
         self.buttonGroup = None
         self.training_sample = {}
         self.elements = []
+
+    def resource_path(self, relative_path):
+        """ 获取资源文件的绝对路径 """
+        try:
+            # PyInstaller创建临时文件夹，并把路径存储在_MEIPASS中
+            base_path = sys._MEIPASS
+        except Exception:
+            base_path = os.path.abspath(".")
+
+        return os.path.join(base_path, relative_path)
 
     def get_training_sample(self, training_sample):
         self.training_sample = training_sample
@@ -978,13 +1008,24 @@ class ExportWindow(QMainWindow, Ui_ExportWindow):
         self.setWindowTitle('Export')
         self.setMinimumSize(800, 200)
         self.setMaximumSize(800, 200)
-        self.setWindowIcon(QIcon("Images/BgoFace.ico"))
+        self.setWindowIcon(QIcon(self.resource_path("Images/BgoFace.ico")))
         self.browseExportTrainingSampleFileButton.clicked.connect(self.browse_export_path)
         self.okExportButton.clicked.connect(self.export)
         self.cancelExportButton.clicked.connect(self.close)
 
         self.training_sample = None
         self.export_training_sample_path = None
+
+    def resource_path(self, relative_path):
+        """ 获取资源文件的绝对路径 """
+        try:
+            # PyInstaller创建临时文件夹，并把路径存储在_MEIPASS中
+            base_path = sys._MEIPASS
+        except Exception:
+            base_path = os.path.abspath(".")
+
+        return os.path.join(base_path, relative_path)
+
     def browse_export_path(self):
         options = QFileDialog.Options()
         # 获取文件夹路径
@@ -1158,7 +1199,17 @@ class ResultWindow(QMainWindow, Ui_ResultWindow):
         self.setWindowTitle('Result')
         self.setMinimumSize(881, 517)
         self.setMaximumSize(881, 517)
-        self.setWindowIcon(QIcon("Images/BgoFace.ico"))
+        self.setWindowIcon(QIcon(self.resource_path("Images/BgoFace.ico")))
+
+    def resource_path(self, relative_path):
+        """ 获取资源文件的绝对路径 """
+        try:
+            # PyInstaller创建临时文件夹，并把路径存储在_MEIPASS中
+            base_path = sys._MEIPASS
+        except Exception:
+            base_path = os.path.abspath(".")
+
+        return os.path.join(base_path, relative_path)
 
 class SingleObjectParameterWindow(QMainWindow, Ui_SingleObjectParameterWindow):
     single_object_parameters_uploaded = pyqtSignal(dict)
@@ -1169,7 +1220,7 @@ class SingleObjectParameterWindow(QMainWindow, Ui_SingleObjectParameterWindow):
         self.setWindowTitle("Single Object Parameter")
         self.setMinimumSize(905, 603)
         self.setMaximumSize(905, 603)
-        self.setWindowIcon(QIcon("Images/BgoFace.ico"))
+        self.setWindowIcon(QIcon(self.resource_path("Images/BgoFace.ico")))
 
         # 子窗口
         self.contrastWindow = ContrastWindow()
@@ -1249,6 +1300,17 @@ class SingleObjectParameterWindow(QMainWindow, Ui_SingleObjectParameterWindow):
         self.setParametersButton.clicked.connect(self.set_parameters)
         self.resetParametersButton.clicked.connect(self.reset_parameters)
         self.showRegressionContrastButton.clicked.connect(self.open_contrast_window)
+
+    def resource_path(self, relative_path):
+        """ 获取资源文件的绝对路径 """
+        try:
+            # PyInstaller创建临时文件夹，并把路径存储在_MEIPASS中
+            base_path = sys._MEIPASS
+        except Exception:
+            base_path = os.path.abspath(".")
+
+        return os.path.join(base_path, relative_path)
+
     # 初始化
     def initialize(self):
 
@@ -1439,7 +1501,7 @@ class MultipleObjectsParameterWindow(QMainWindow, Ui_MultipleObjectsParameterWin
         self.setWindowTitle("Multiple Objects Parameter")
         self.setMinimumSize(905, 328)
         self.setMaximumSize(905, 328)
-        self.setWindowIcon(QIcon("Images/BgoFace.ico"))
+        self.setWindowIcon(QIcon(self.resource_path("Images/BgoFace.ico")))
 
         # 变量
         self.training_sample = None
@@ -1461,6 +1523,16 @@ class MultipleObjectsParameterWindow(QMainWindow, Ui_MultipleObjectsParameterWin
         self.multiple_objects_method_ComboBox.currentIndexChanged.connect(self.change_multiple_objects_method)
         self.setParametersButton.clicked.connect(self.set_parameters)
         self.resetParametersButton.clicked.connect(self.reset_parameters)
+
+    def resource_path(self, relative_path):
+        """ 获取资源文件的绝对路径 """
+        try:
+            # PyInstaller创建临时文件夹，并把路径存储在_MEIPASS中
+            base_path = sys._MEIPASS
+        except Exception:
+            base_path = os.path.abspath(".")
+
+        return os.path.join(base_path, relative_path)
 
     # 初始化
     def initialize(self):
@@ -1513,7 +1585,7 @@ class ContrastWindow(QMainWindow, Ui_ContrastWindow):
         self.setWindowTitle("Pred v.s. Label")
         self.setMinimumSize(605, 541)
         self.setMaximumSize(605, 541)
-        self.setWindowIcon(QIcon("Images/BgoFace.ico"))
+        self.setWindowIcon(QIcon(self.resource_path("Images/BgoFace.ico")))
 
         # 子窗口
         self.saveWindow = SaveWindow()
@@ -1525,6 +1597,16 @@ class ContrastWindow(QMainWindow, Ui_ContrastWindow):
         self.scene_contrast = QGraphicsScene(self)
         self.regressionContrastGraphicsView.setScene(self.scene_contrast)
         self.saveRegressionContrastButton.clicked.connect(self.open_save_window)
+
+    def resource_path(self, relative_path):
+        """ 获取资源文件的绝对路径 """
+        try:
+            # PyInstaller创建临时文件夹，并把路径存储在_MEIPASS中
+            base_path = sys._MEIPASS
+        except Exception:
+            base_path = os.path.abspath(".")
+
+        return os.path.join(base_path, relative_path)
 
     def get_training_sample(self, training_sample):
         self.training_sample = training_sample
@@ -1616,7 +1698,7 @@ class SaveWindow(QMainWindow, Ui_SaveWindow):
         self.setWindowTitle('Save')
         self.setMinimumSize(800, 200)
         self.setMaximumSize(800, 200)
-        self.setWindowIcon(QIcon("Images/BgoFace.ico"))
+        self.setWindowIcon(QIcon(self.resource_path("Images/BgoFace.ico")))
 
         self.browseDownloadContrastPictureButton.clicked.connect(self.browse_save_path)
         self.okDownloadButton.clicked.connect(self.save)
@@ -1624,6 +1706,16 @@ class SaveWindow(QMainWindow, Ui_SaveWindow):
 
         self.training_sample = None
         self.save_contrast_picture_path = None
+
+    def resource_path(self, relative_path):
+        """ 获取资源文件的绝对路径 """
+        try:
+            # PyInstaller创建临时文件夹，并把路径存储在_MEIPASS中
+            base_path = sys._MEIPASS
+        except Exception:
+            base_path = os.path.abspath(".")
+
+        return os.path.join(base_path, relative_path)
 
     def browse_save_path(self):
         options = QFileDialog.Options()
