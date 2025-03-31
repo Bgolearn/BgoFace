@@ -29,26 +29,6 @@ from export import Ui_ExportWindow
 from contrast import Ui_ContrastWindow
 from save import Ui_SaveWindow
 
-from sklearn.utils import resample
-from sklearn.ensemble import RandomForestRegressor
-
-class Kriging_model(object):
-    def fit_pre(self, xtrain, ytrain, xtest, ):
-        Bgo_model = RandomForestRegressor(n_estimators=3, max_depth=3, random_state=42)
-        all_predictions = []
-        for _ in range(10):
-            # Perform Bootstrap sampling
-            X_bootstrap, y_bootstrap = resample(xtrain, ytrain)
-            predictions = Bgo_model.fit(X_bootstrap, y_bootstrap).predict(xtest)
-            # Store the predictions
-            all_predictions.append(predictions)
-
-        # Convert the list of predictions to a NumPy array for easier calculations
-        all_predictions = np.array(all_predictions)
-        # Calculate mean and standard deviation across the samples
-        mean = np.mean(all_predictions, axis=0)
-        std = np.std(all_predictions, axis=0)
-        return mean, std
 
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
@@ -99,7 +79,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.virtual_sample = None
         self.multiple_objects_training_sample_file_path = None
         self.multiple_objects_virtual_sample_file_path = None
-        self.Kriging_model = Kriging_model
 
         self.sample_data = {}
         self.selected_sample_data = {}
@@ -109,7 +88,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             'opt_num': 1,
             'min_search': True,
             'Dynamic_W': False,
-            'Kriging_model': True
+            'Kriging_model': 'GPR'
         }
         self.multiple_objects_parameters_setting = {
             'object_num': 2,
@@ -413,15 +392,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     min_search = self.single_object_parameters_setting['min_search']
                     Dynamic_W = self.single_object_parameters_setting['Dynamic_W']
                     Kriging_model = self.single_object_parameters_setting['Kriging_model']
+                    if Kriging_model == 'GPR':
+                        Kriging_model = None
                     # Capture the output
                     old_stdout = sys.stdout
                     sys.stdout = buffer = io.StringIO()
                     # Print the output to the console (this will be captured)
-                    if Kriging_model:
-                        Mymodel = Bgolearn.fit(data_matrix=x, Measured_response=y, virtual_samples=self.virtual_sample,
-                                               opt_num=opt_num, min_search=min_search, Dynamic_W=Dynamic_W, Kriging_model=self.Kriging_model)
-                    else:
-                        Mymodel = Bgolearn.fit(data_matrix=x, Measured_response=y, virtual_samples=self.virtual_sample, opt_num=opt_num, min_search=min_search, Dynamic_W=Dynamic_W)
+                    Mymodel = Bgolearn.fit(data_matrix=x, Measured_response=y, virtual_samples=self.virtual_sample,
+                                           opt_num=opt_num, min_search=min_search, Dynamic_W=Dynamic_W, Kriging_model=Kriging_model)
                     # Restore the original stdout
                     sys.stdout = old_stdout
                     captured_output = buffer.getvalue()
@@ -1231,7 +1209,7 @@ class SingleObjectParameterWindow(QMainWindow, Ui_SingleObjectParameterWindow):
             'opt_num': 1,
             'min_search': True,
             'Dynamic_W': False,
-            'Kriging_model': True,
+            'Kriging_model': ['GPR', 'SVM', 'RF', 'AdaB', 'MLP'],
             'function': {
                 'EI': {
                     'name': 'Expected improvement method'
@@ -1325,10 +1303,7 @@ class SingleObjectParameterWindow(QMainWindow, Ui_SingleObjectParameterWindow):
             self.regression_Dynamic_W_TrueRadioButton.setChecked(True)
         else:
             self.regression_Dynamic_W_FalseRadioButton.setChecked(True)
-        if self.regression_default_setting['Kriging_model']:
-            self.regression_Kriging_model_Random_Forest_RadioButton.setChecked(True)
-        else:
-            self.regression_Kriging_model_Gaussian_Process_RadioButton.setChecked(True)
+        self.regression_Kriging_model_ComboBox.addItems(self.regression_default_setting['Kriging_model'])
 
         self.parameterLabel.setVisible(False)
         self.regressionParameter1Widget.setVisible(False)
@@ -1431,7 +1406,11 @@ class SingleObjectParameterWindow(QMainWindow, Ui_SingleObjectParameterWindow):
             self.setting['opt_num'] = self.regression_opt_num_SpinBox.value()
             self.setting['min_search'] = self.regression_min_search_TrueRadioButton.isChecked()
             self.setting['Dynamic_W'] = self.regression_Dynamic_W_TrueRadioButton.isChecked()
-            self.setting['Kriging_model'] = self.regression_Kriging_model_Random_Forest_RadioButton.isChecked()
+            Kriging_model = str(self.regression_Kriging_model_ComboBox.currentText())
+            if Kriging_model == 'GPR':
+                self.setting['Kriging_model'] = None
+            else:
+                self.setting['Kriging_model'] = Kriging_model
             function = str(self.regressionFunctionComboBox.currentText())
             self.setting['function'] = function
             if function in ['UCB', 'PoI', 'PES', 'Knowledge_G']:
@@ -1468,10 +1447,7 @@ class SingleObjectParameterWindow(QMainWindow, Ui_SingleObjectParameterWindow):
             self.regression_Dynamic_W_TrueRadioButton.setChecked(True)
         else:
             self.regression_Dynamic_W_FalseRadioButton.setChecked(True)
-        if self.regression_default_setting['Kriging_model']:
-            self.regression_Kriging_model_Random_Forest_RadioButton.setChecked(True)
-        else:
-            self.regression_Kriging_model_Gaussian_Process_RadioButton.setChecked(True)
+        self.regression_Kriging_model_ComboBox.setCurrentIndex(0)
         self.parameterLabel.setVisible(False)
         self.regressionParameter1Widget.setVisible(False)
         self.regressionParameter2Widget.setVisible(False)

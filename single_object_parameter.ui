@@ -341,32 +341,6 @@
      <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
-        <x>530</x>
-        <y>60</y>
-        <width>325</width>
-        <height>29</height>
-       </rect>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_3">
-       <item>
-        <widget class="QRadioButton" name="regression_Kriging_model_Random_Forest_RadioButton">
-         <property name="text">
-          <string>Random Forest</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QRadioButton" name="regression_Kriging_model_Gaussian_Process_RadioButton">
-         <property name="text">
-          <string>Gaussian Process</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="layoutWidget">
-      <property name="geometry">
-       <rect>
         <x>10</x>
         <y>300</y>
         <width>701</width>
@@ -414,6 +388,16 @@
       </property>
       <property name="text">
        <string>Kriging_model:</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="regression_Kriging_model_ComboBox">
+      <property name="geometry">
+       <rect>
+        <x>530</x>
+        <y>60</y>
+        <width>131</width>
+        <height>27</height>
+       </rect>
       </property>
      </widget>
     </widget>
