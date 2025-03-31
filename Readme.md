@@ -17,7 +17,7 @@ To encapsulate the user interface and create a standalone application, follow th
 
 2. **Package the application using PyInstaller:**
    ```bash
-   pyinstaller --onefile --windowed main.py
+   pyinstaller -F -w --add-data "Images;Images" main.py
    ```
    This command creates a single executable file from `main.py` without opening a console window.
 
