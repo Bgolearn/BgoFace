@@ -22,7 +22,7 @@ Get started quickly by watching our step-by-step video tutorial:
 
 ## 💾 Download the Application (Windows)
 
-You can directly download the latest pre-built version of **BgoFace for Windows** from our [Releases Page](https://github.com/your-repo-name/releases).
+You can directly download the latest pre-built version of **BgoFace for Windows** from our [Releases Page](https://github.com/Bgolearn/BgoFace/releases).
 
 ### 📥 Steps:
 
