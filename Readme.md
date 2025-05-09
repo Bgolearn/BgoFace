@@ -7,18 +7,34 @@
 
 ## 🌟 Design Materials Using BgoFace
 
+BgoFace allows users to design, visualize, and analyze material systems via an intuitive graphical interface.
+
 ![Design Interface](https://github.com/user-attachments/assets/30870d63-9f60-4837-897d-8453d48e5b34)
 
 ---
 
 ### 🎥 Code Tutorial
 
-Watch a hands-on tutorial on BiliBili:
-[BiliBili Video](https://www.bilibili.com/video/BV1LTtLeaEZp/?spm_id_from=333.337.search-card.all.click)
+Get started quickly by watching our step-by-step video tutorial:
+[BiliBili: Intro to BgoFace](https://www.bilibili.com/video/BV1LTtLeaEZp/?spm_id_from=333.337.search-card.all.click)
+
+---
+
+## 💾 Download the Application (Windows)
+
+You can directly download the latest pre-built version of **BgoFace for Windows** from our [Releases Page](https://github.com/your-repo-name/releases).
+
+### 📥 Steps:
+
+1. Navigate to the [Releases Section](https://github.com/Bgolearn/BgoFace/releases).
+2. Download the `.exe` file from the **latest release**.
+3. Run the file — no installation is required!
 
 ---
 
 ## 🧠 Architecture of BgoFace
+
+This diagram outlines how the components of BgoFace interact, from user input to backend computation:
 
 ![Architecture Diagram](https://github.com/user-attachments/assets/17d5b63a-6f10-4783-b95e-d645c39709f3)
 
@@ -26,7 +42,7 @@ Watch a hands-on tutorial on BiliBili:
 
 ## 🖥️ UI Encapsulation Guide
 
-To package the BgoFace interface into a standalone desktop application:
+To create a standalone desktop version of BgoFace yourself:
 
 1. **Install Required Packages**
 
@@ -41,15 +57,14 @@ To package the BgoFace interface into a standalone desktop application:
    ```
 
    * `-F`: Bundle into one file
-   * `-w`: No console window
-   * `--add-data`: Include image assets
-     This command will generate a standalone `.exe` for `main.py`.
+   * `-w`: Suppress console window
+   * `--add-data`: Include additional assets like images
 
 ---
 
 ## 📄 Acknowledgement
 
-If you use the code or data from this repository, please cite our related paper.
+If you use the code or data from this repository, please cite our related research publication.
 
 ---
 
@@ -57,8 +72,5 @@ If you use the code or data from this repository, please cite our related paper.
 
 © 2024 Bgolearn Development Team. All rights reserved.
 
-This software is intended for **academic and research purposes only**.
-**Commercial use is strictly prohibited.** Unauthorized use will result in legal action.
-
-![License Notice](https://github.com/user-attachments/assets/245278dd-522b-41aa-a330-212c3a615564)
-
+This software is for **academic and research use only**.
+**Commercial use is strictly prohibited** and subject to enforcement.
