@@ -7,6 +7,16 @@
 
 ---
 
+**BgoFace** is a user-friendly interface developed for the [Bgolearn](https://github.com/Bin-Cao/Bgolearn) framework, led by [Cao Bin](https://www.caobin.asia/) and published in *MGE Advances*. Designed to accelerate materials discovery, BgoFace simplifies **Bayesian global optimization (BGO)** workflows by bridging the gap between experimental and computational domains.
+
+With intuitive controls, integrated support for experimental constraints, and seamless access to active learning algorithms, BgoFace empowers users to conduct efficient materials exploration—without requiring deep expertise in machine learning.
+
+Special thanks to **Mr. Tianliang Li**, **Mr. Siyuan Liu**, and to the guidance of **Prof. Tong-Yi Zhang** and **Prof. Lingyan Feng**.
+
+---
+
+
+
 ## 🌟 Design Materials Using BgoFace
 
 BgoFace allows users to design, visualize, and analyze material systems via an intuitive graphical interface.
