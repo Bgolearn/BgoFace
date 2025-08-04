@@ -1,7 +1,8 @@
 
 ## BgoFace: A User Interface for the [Bgolearn](http://bgolearn.caobin.asia/) Platform
 
-> [Visit Bgolearn Homepage](http://bgolearn.caobin.asia/) 
+> [Visit Bgolearn Homepage](http://bgolearn.caobin.asia/)
+> 
 > [Paper : MGE Advances](https://onlinelibrary.wiley.com/doi/epdf/10.1002/mgea.70031) 
 
 ---
