@@ -38,7 +38,7 @@ Special thanks to **Mr. Tianliang Li**, **Mr. Siyuan Liu**, and to the guidance 
 
 
 
-## 🌟 Design Materials Using BgoFace
+## Design Materials Using BgoFace
 
 BgoFace allows users to design, visualize, and analyze material systems via an intuitive graphical interface.
 
@@ -46,18 +46,18 @@ BgoFace allows users to design, visualize, and analyze material systems via an i
 
 ---
 
-### 🎥 Code Tutorial
+### Code Tutorial
 
 Get started quickly by watching our step-by-step video tutorial:
 [BiliBili: Intro to BgoFace](https://www.bilibili.com/video/BV1LTtLeaEZp/?spm_id_from=333.337.search-card.all.click)
 
 ---
 
-## 💾 Download the Application (Windows)
+## Download the Application (Windows)
 
 You can directly download the latest pre-built version of **BgoFace for Windows** from our [Releases Page](https://github.com/Bgolearn/BgoFace/releases).
 
-### 📥 Steps:
+### Steps:
 
 1. Navigate to the [Releases Section](https://github.com/Bgolearn/BgoFace/releases).
 2. Download the `.exe` file from the **latest release**.
@@ -65,7 +65,7 @@ You can directly download the latest pre-built version of **BgoFace for Windows*
 
 ---
 
-## 🧠 Architecture of BgoFace
+## Architecture of BgoFace
 
 This diagram outlines how the components of BgoFace interact, from user input to backend computation:
 
@@ -73,7 +73,7 @@ This diagram outlines how the components of BgoFace interact, from user input to
 
 ---
 
-## 🖥️ UI Encapsulation Guide
+## UI Encapsulation Guide
 
 To create a standalone desktop version of BgoFace yourself:
 
@@ -95,13 +95,13 @@ To create a standalone desktop version of BgoFace yourself:
 
 ---
 
-## 📄 Acknowledgement
+## Acknowledgement
 
 If you use the code or data from this repository, please cite our related research publication.
 
 ---
 
-## 📜 License & Usage
+## License & Usage
 
 © 2024 Bgolearn Development Team. All rights reserved.
 
