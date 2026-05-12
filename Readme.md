@@ -28,7 +28,7 @@
     <img src="https://img.shields.io/github/license/Bgolearn/BgoFace" alt="License">
   </a>
 
-  <a href="https://onlinelibrary.wiley.com/doi/10.1002/mgea.10107">
+  <a href="https://onlinelibrary.wiley.com/doi/pdf/10.1002/mgea.70031">
     <img src="https://img.shields.io/badge/MGE%20Advances-2025-red" alt="Paper">
   </a>
 </p>
