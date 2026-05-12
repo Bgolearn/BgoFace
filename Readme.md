@@ -1,12 +1,42 @@
 
 
+<h1 align="center">BgoFace</h1>
+
+<p align="center">
+  Graphical Bayesian Optimization Interface for AI-Driven Materials Discovery
+</p>
+
+<p align="center">
+  A user-friendly active learning platform built on Bgolearn for autonomous experimentation and accelerated materials optimization.
+</p>
+
+<p align="center">
+  <a href="https://github.com/Bgolearn/BgoFace/stargazers">
+    <img src="https://img.shields.io/github/stars/Bgolearn/BgoFace?style=social" alt="GitHub Stars">
+  </a>
+
+  <a href="https://github.com/Bgolearn/BgoFace/network/members">
+    <img src="https://img.shields.io/github/forks/Bgolearn/BgoFace?style=social" alt="GitHub Forks">
+  </a>
+
+  <a href="https://github.com/Bgolearn/BgoFace/issues">
+    <img src="https://img.shields.io/github/issues/Bgolearn/BgoFace" alt="Open Issues">
+  </a>
+
+  <a href="https://github.com/Bgolearn/BgoFace/issues?q=is%3Aissue+is%3Aclosed">
+    <img src="https://img.shields.io/github/issues-closed/Bgolearn/BgoFace" alt="Closed Issues">
+  </a>
+
+  <a href="https://github.com/Bgolearn/BgoFace/blob/main/LICENSE">
+    <img src="https://img.shields.io/github/license/Bgolearn/BgoFace" alt="License">
+  </a>
+
+  <a href="https://onlinelibrary.wiley.com/doi/10.1002/mgea.10107">
+    <img src="https://img.shields.io/badge/MGE%20Advances-2025-red" alt="Paper">
+  </a>
+</p>
 
 
-## BgoFace: A User Interface for the [Bgolearn](http://bgolearn.caobin.asia/) Platform
-
-> [Visit Bgolearn Homepage](http://bgolearn.caobin.asia/)
-> 
-> [Paper : MGE Advances](https://onlinelibrary.wiley.com/doi/epdf/10.1002/mgea.70031) 
 
 ---
 
