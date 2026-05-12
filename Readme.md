@@ -2,9 +2,6 @@
 
 <h1 align="center">BgoFace</h1>
 
-<p align="center">
-  Graphical Bayesian Optimization Interface for AI-Driven Materials Discovery
-</p>
 
 <p align="center">
   A user-friendly active learning platform built on Bgolearn for autonomous experimentation and accelerated materials optimization.
