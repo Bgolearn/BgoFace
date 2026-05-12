@@ -1,24 +1,6 @@
 
 
 
-<table>
-  <tr>
-    <td width="160" align="center" valign="top">
-      <img src="https://github.com/user-attachments/assets/7e77bd5a-42d6-45db-b8e6-2c82cac81b9d" width="140" style="border-radius: 50%;"/>
-    </td>
-    <td valign="top">
-      <b>For any inquiries or assistance, feel free to contact Mr. CAO Bin at:</b><br>
-      📧 Email: <a href="mailto:bcao686@connect.hkust-gz.edu.cn">bcao686@connect.hkust-gz.edu.cn</a><br><br>
-      Cao Bin is a PhD candidate at the <b>Hong Kong University of Science and Technology (Guangzhou)</b>, 
-      under the supervision of Professor <a href="https://gbaaa.org.hk/en-us/article/67">Zhang Tong-Yi</a>. His research focuses on 
-      <b>AI for science</b>, especially intelligent crystal-structure analysis and discovery. 
-      Learn more about his work on his 
-      <a href="https://www.caobin.asia/">homepage</a>.
-    </td>
-  </tr>
-</table>
-
----
 
 ## BgoFace: A User Interface for the [Bgolearn](http://bgolearn.caobin.asia/) Platform
 
@@ -42,7 +24,8 @@ Special thanks to **Mr. Tianliang Li**, **Mr. Siyuan Liu**, and to the guidance 
 
 BgoFace allows users to design, visualize, and analyze material systems via an intuitive graphical interface.
 
-![Design Interface](https://github.com/user-attachments/assets/30870d63-9f60-4837-897d-8453d48e5b34)
+<img src="https://github.com/user-attachments/assets/30870d63-9f60-4837-897d-8453d48e5b34" 
+     width="80%"/>
 
 ---
 
@@ -69,8 +52,10 @@ You can directly download the latest pre-built version of **BgoFace for Windows*
 
 This diagram outlines how the components of BgoFace interact, from user input to backend computation:
 
-![Architecture Diagram](https://github.com/user-attachments/assets/17d5b63a-6f10-4783-b95e-d645c39709f3)
 
+<img src="https://github.com/user-attachments/assets/17d5b63a-6f10-4783-b95e-d645c39709f3" 
+     width="80%"/>
+     
 ---
 
 ## UI Encapsulation Guide
