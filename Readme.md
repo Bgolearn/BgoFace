@@ -25,7 +25,7 @@ Special thanks to **Mr. Tianliang Li**, **Mr. Siyuan Liu**, and to the guidance 
 BgoFace allows users to design, visualize, and analyze material systems via an intuitive graphical interface.
 
 <img src="https://github.com/user-attachments/assets/30870d63-9f60-4837-897d-8453d48e5b34" 
-     width="80%"/>
+     width="60%"/>
 
 ---
 
@@ -54,7 +54,7 @@ This diagram outlines how the components of BgoFace interact, from user input to
 
 
 <img src="https://github.com/user-attachments/assets/17d5b63a-6f10-4783-b95e-d645c39709f3" 
-     width="80%"/>
+     width="60%"/>
      
 ---
 
