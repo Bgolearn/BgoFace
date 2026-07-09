@@ -1,10 +1,7 @@
-
-
 <h1 align="center">BgoFace</h1>
 
-
 <p align="center">
-  A user-friendly active learning platform built on Bgolearn for autonomous experimentation and accelerated materials optimization.
+  Eine benutzerfreundliche Active-Learning-Plattform auf Basis von Bgolearn für autonome Experimente und beschleunigte Materialoptimierung.
 </p>
 
 <p align="center">
@@ -19,27 +16,15 @@
   <a href="https://github.com/Bgolearn/BgoFace/stargazers">
     <img src="https://img.shields.io/github/stars/Bgolearn/BgoFace?style=social" alt="GitHub Stars">
   </a>
-
   <a href="https://github.com/Bgolearn/BgoFace/network/members">
     <img src="https://img.shields.io/github/forks/Bgolearn/BgoFace?style=social" alt="GitHub Forks">
   </a>
-
   <a href="https://github.com/Bgolearn/BgoFace/issues">
     <img src="https://img.shields.io/github/issues/Bgolearn/BgoFace" alt="Open Issues">
   </a>
-
-  <a href="https://github.com/Bgolearn/BgoFace/issues?q=is%3Aissue+is%3Aclosed">
-    <img src="https://img.shields.io/github/issues-closed/Bgolearn/BgoFace" alt="Closed Issues">
-  </a>
-
   <a href="https://github.com/Bgolearn/BgoFace/blob/main/LICENSE">
     <img src="https://img.shields.io/github/license/Bgolearn/BgoFace" alt="License">
   </a>
-
-  <a href="https://onlinelibrary.wiley.com/doi/pdf/10.1002/mgea.70031">
-    <img src="https://img.shields.io/badge/MGE%20Advances-2025-red" alt="Paper">
-  </a>
-
   <a href="https://doi.org/10.1038/s41524-026-02226-3">
     <img src="https://img.shields.io/badge/npj%20Computational%20Materials-2026-red" alt="Bgolearn Paper">
   </a>
@@ -60,93 +45,87 @@
   </a>
 </p>
 
+---
 
+**BgoFace** ist eine benutzerfreundliche grafische Oberfläche für das [Bgolearn](https://github.com/Bin-Cao/Bgolearn)-Framework. Die Entwicklung wird vom Team um [Cao Bin](https://www.caobin.asia/) geleitet. BgoFace vereinfacht **Bayesian global optimization (BGO)**-Workflows und unterstützt damit eine schnellere Materialentdeckung.
+
+Mit intuitiven Bedienelementen, Unterstützung experimenteller Randbedingungen und direktem Zugang zu Active-Learning-Algorithmen ermöglicht BgoFace effiziente Materialsuche ohne tiefgehende Machine-Learning-Vorkenntnisse.
+
+Besonderer Dank gilt **Tianliang Li**, **Siyuan Liu** sowie der Betreuung durch **Prof. Tong-Yi Zhang** und **Prof. Lingyan Feng**.
 
 ---
 
-**BgoFace** is a user-friendly interface developed for the [Bgolearn](https://github.com/Bin-Cao/Bgolearn) framework, led by [Cao Bin](https://www.caobin.asia/) and supported by the related Bgolearn publications. Designed to accelerate materials discovery, BgoFace simplifies **Bayesian global optimization (BGO)** workflows by bridging the gap between experimental and computational domains.
+## Ressourcen
 
-With intuitive controls, integrated support for experimental constraints, and seamless access to active learning algorithms, BgoFace empowers users to conduct efficient materials exploration—without requiring deep expertise in machine learning.
-
-Special thanks to **Mr. Tianliang Li**, **Mr. Siyuan Liu**, and to the guidance of **Prof. Tong-Yi Zhang** and **Prof. Lingyan Feng**.
-
----
-
-## Resource Links
-
-| Resource | Description | Link |
+| Ressource | Beschreibung | Link |
 | --- | --- | --- |
-| **Bgolearn** | Core Bayesian optimization framework | [github.com/Bin-Cao/Bgolearn](https://github.com/Bin-Cao/Bgolearn) |
-| **MultiBgolearn** | Bgolearn multi-object module | [github.com/Bin-Cao/MultiBgolearn](https://github.com/Bin-Cao/MultiBgolearn) |
-| **BgoFace** | Official Bgolearn GUI | [github.com/Bgolearn/BgoFace](https://github.com/Bgolearn/BgoFace) |
-| **CodeDemo** | Example code and datasets | [github.com/Bgolearn/CodeDemo](https://github.com/Bgolearn/CodeDemo) |
+| **Bgolearn** | Kernframework für Bayessche Optimierung | [github.com/Bin-Cao/Bgolearn](https://github.com/Bin-Cao/Bgolearn) |
+| **MultiBgolearn** | Multi-Objective-Modul für Bgolearn | [github.com/Bin-Cao/MultiBgolearn](https://github.com/Bin-Cao/MultiBgolearn) |
+| **BgoFace** | Offizielle Bgolearn-GUI | [github.com/Bgolearn/BgoFace](https://github.com/Bgolearn/BgoFace) |
+| **CodeDemo** | Beispielcode und Datensätze | [github.com/Bgolearn/CodeDemo](https://github.com/Bgolearn/CodeDemo) |
 
 ---
 
+## Materialien mit BgoFace entwerfen
 
-## Design Materials Using BgoFace
+BgoFace unterstützt das Entwerfen, Visualisieren und Analysieren von Materialsystemen über eine intuitive grafische Oberfläche.
 
-BgoFace allows users to design, visualize, and analyze material systems via an intuitive graphical interface.
-
-<img src="https://github.com/user-attachments/assets/30870d63-9f60-4837-897d-8453d48e5b34" 
-     width="60%"/>
+<img src="https://github.com/user-attachments/assets/30870d63-9f60-4837-897d-8453d48e5b34" width="60%"/>
 
 ---
 
-### Code Tutorial
+### Code-Tutorial
 
-Get started quickly by watching our step-by-step video tutorial:
+Der schnelle Einstieg erfolgt über das Schritt-für-Schritt-Video:
 [BiliBili: Intro to BgoFace](https://www.bilibili.com/video/BV1LTtLeaEZp/?spm_id_from=333.337.search-card.all.click)
 
 ---
 
-## Download the Application (Windows)
+## Anwendung herunterladen Windows
 
-You can directly download the latest pre-built version of **BgoFace for Windows** from our [Releases Page](https://github.com/Bgolearn/BgoFace/releases).
+Die aktuelle vorgefertigte Version von **BgoFace for Windows** kann direkt über die [Releases-Seite](https://github.com/Bgolearn/BgoFace/releases) heruntergeladen werden.
 
-### Steps:
+### Schritte
 
-1. Navigate to the [Releases Section](https://github.com/Bgolearn/BgoFace/releases).
-2. Download the `.exe` file from the **latest release**.
-3. Run the file — no installation is required!
+1. Öffnen Sie die [Releases Section](https://github.com/Bgolearn/BgoFace/releases).
+2. Laden Sie die `.exe`-Datei der neuesten Version herunter.
+3. Fuhren Sie die Datei direkt aus, eine Installation ist nicht erforderlich.
 
 ---
 
-## Architecture of BgoFace
+## Architektur von BgoFace
 
-This diagram outlines how the components of BgoFace interact, from user input to backend computation:
+Das folgende Diagramm zeigt, wie die Komponenten von BgoFace vom Benutzereingang bis zur Backend-Berechnung zusammenwirken.
 
+<img src="https://github.com/user-attachments/assets/17d5b63a-6f10-4783-b95e-d645c39709f3" width="60%"/>
 
-<img src="https://github.com/user-attachments/assets/17d5b63a-6f10-4783-b95e-d645c39709f3" 
-     width="60%"/>
-     
 ---
 
-## UI Encapsulation Guide
+## Anleitung zur UI-Paketierung
 
-To create a standalone desktop version of BgoFace yourself:
+So erstellen Sie selbst eine eigenständige Desktop-Version von BgoFace:
 
-1. **Install Required Packages**
+1. **Erforderliche Pakete installieren**
 
    ```bash
    pip install pyqt5 pyinstaller
    ```
 
-2. **Build Executable with PyInstaller**
+2. **Ausführbare Datei mit PyInstaller bauen**
 
    ```bash
    pyinstaller -F -w --add-data "Images;Images" main.py
    ```
 
-   * `-F`: Bundle into one file
-   * `-w`: Suppress console window
-   * `--add-data`: Include additional assets like images
+   * `-F`: Bundelt alles in eine Datei
+   * `-w`: Unterdrückt das Konsolenfenster
+   * `--add-data`: Bindet zusätzliche Assets wie Bilder ein
 
 ---
 
-## Acknowledgement
+## Danksagung und Zitation
 
-If you use the code or data from this repository, please cite our related research publication.
+Wenn Sie Code oder Daten aus diesem Repository verwenden, zitieren Sie bitte die zugehörigen wissenschaftlichen Arbeiten.
 
 ```bibtex
 @article{Cao2026Bgolearn,
@@ -174,9 +153,9 @@ If you use the code or data from this repository, please cite our related resear
 
 ---
 
-## License & Usage
+## Lizenz und Nutzung
 
 © 2024 Bgolearn Development Team. All rights reserved.
 
-This software is for **academic and research use only**.
-**Commercial use is strictly prohibited** and subject to enforcement.
+Diese Software ist ausschließlich für **akademische Zwecke und Forschung** bestimmt.
+**Kommerzielle Nutzung ist streng untersagt**.

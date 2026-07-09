@@ -1,10 +1,7 @@
-
-
 <h1 align="center">BgoFace</h1>
 
-
 <p align="center">
-  A user-friendly active learning platform built on Bgolearn for autonomous experimentation and accelerated materials optimization.
+  자율 실험과 재료 최적화 가속을 위한 Bgolearn 기반 사용자 친화형 능동학습 플랫폼입니다.
 </p>
 
 <p align="center">
@@ -19,27 +16,15 @@
   <a href="https://github.com/Bgolearn/BgoFace/stargazers">
     <img src="https://img.shields.io/github/stars/Bgolearn/BgoFace?style=social" alt="GitHub Stars">
   </a>
-
   <a href="https://github.com/Bgolearn/BgoFace/network/members">
     <img src="https://img.shields.io/github/forks/Bgolearn/BgoFace?style=social" alt="GitHub Forks">
   </a>
-
   <a href="https://github.com/Bgolearn/BgoFace/issues">
     <img src="https://img.shields.io/github/issues/Bgolearn/BgoFace" alt="Open Issues">
   </a>
-
-  <a href="https://github.com/Bgolearn/BgoFace/issues?q=is%3Aissue+is%3Aclosed">
-    <img src="https://img.shields.io/github/issues-closed/Bgolearn/BgoFace" alt="Closed Issues">
-  </a>
-
   <a href="https://github.com/Bgolearn/BgoFace/blob/main/LICENSE">
     <img src="https://img.shields.io/github/license/Bgolearn/BgoFace" alt="License">
   </a>
-
-  <a href="https://onlinelibrary.wiley.com/doi/pdf/10.1002/mgea.70031">
-    <img src="https://img.shields.io/badge/MGE%20Advances-2025-red" alt="Paper">
-  </a>
-
   <a href="https://doi.org/10.1038/s41524-026-02226-3">
     <img src="https://img.shields.io/badge/npj%20Computational%20Materials-2026-red" alt="Bgolearn Paper">
   </a>
@@ -60,93 +45,87 @@
   </a>
 </p>
 
+---
 
+**BgoFace** 는 [Bgolearn](https://github.com/Bin-Cao/Bgolearn) 프레임워크를 위한 사용자 친화형 GUI입니다. [Cao Bin](https://www.caobin.asia/) 팀이 주도하여 개발했으며, 재료 발견을 가속하기 위해 **Bayesian global optimization (BGO)** 워크플로를 단순화합니다.
+
+직관적인 조작, 실험 제약 조건 지원, 능동학습 알고리즘 접근 기능을 통해 사용자는 깊은 머신러닝 전문 지식 없이도 효율적인 재료 탐색을 수행할 수 있습니다.
+
+**Tianliang Li**, **Siyuan Liu**, 그리고 **Tong-Yi Zhang 교수**와 **Lingyan Feng 교수**의 지도에 감사드립니다.
 
 ---
 
-**BgoFace** is a user-friendly interface developed for the [Bgolearn](https://github.com/Bin-Cao/Bgolearn) framework, led by [Cao Bin](https://www.caobin.asia/) and supported by the related Bgolearn publications. Designed to accelerate materials discovery, BgoFace simplifies **Bayesian global optimization (BGO)** workflows by bridging the gap between experimental and computational domains.
+## 리소스 경로
 
-With intuitive controls, integrated support for experimental constraints, and seamless access to active learning algorithms, BgoFace empowers users to conduct efficient materials exploration—without requiring deep expertise in machine learning.
-
-Special thanks to **Mr. Tianliang Li**, **Mr. Siyuan Liu**, and to the guidance of **Prof. Tong-Yi Zhang** and **Prof. Lingyan Feng**.
-
----
-
-## Resource Links
-
-| Resource | Description | Link |
+| 리소스 | 설명 | 링크 |
 | --- | --- | --- |
-| **Bgolearn** | Core Bayesian optimization framework | [github.com/Bin-Cao/Bgolearn](https://github.com/Bin-Cao/Bgolearn) |
-| **MultiBgolearn** | Bgolearn multi-object module | [github.com/Bin-Cao/MultiBgolearn](https://github.com/Bin-Cao/MultiBgolearn) |
-| **BgoFace** | Official Bgolearn GUI | [github.com/Bgolearn/BgoFace](https://github.com/Bgolearn/BgoFace) |
-| **CodeDemo** | Example code and datasets | [github.com/Bgolearn/CodeDemo](https://github.com/Bgolearn/CodeDemo) |
+| **Bgolearn** | 베이지안 최적화 핵심 프레임워크 | [github.com/Bin-Cao/Bgolearn](https://github.com/Bin-Cao/Bgolearn) |
+| **MultiBgolearn** | Bgolearn 다목적 모듈 | [github.com/Bin-Cao/MultiBgolearn](https://github.com/Bin-Cao/MultiBgolearn) |
+| **BgoFace** | Bgolearn 공식 GUI | [github.com/Bgolearn/BgoFace](https://github.com/Bgolearn/BgoFace) |
+| **CodeDemo** | 예제 코드와 데이터 | [github.com/Bgolearn/CodeDemo](https://github.com/Bgolearn/CodeDemo) |
 
 ---
 
+## BgoFace로 재료 설계
 
-## Design Materials Using BgoFace
+BgoFace는 직관적인 그래픽 인터페이스를 통해 재료 시스템의 설계, 시각화, 분석을 지원합니다.
 
-BgoFace allows users to design, visualize, and analyze material systems via an intuitive graphical interface.
-
-<img src="https://github.com/user-attachments/assets/30870d63-9f60-4837-897d-8453d48e5b34" 
-     width="60%"/>
+<img src="https://github.com/user-attachments/assets/30870d63-9f60-4837-897d-8453d48e5b34" width="60%"/>
 
 ---
 
-### Code Tutorial
+### 코드 튜토리얼
 
-Get started quickly by watching our step-by-step video tutorial:
+단계별 영상 튜토리얼로 빠르게 시작할 수 있습니다:
 [BiliBili: Intro to BgoFace](https://www.bilibili.com/video/BV1LTtLeaEZp/?spm_id_from=333.337.search-card.all.click)
 
 ---
 
-## Download the Application (Windows)
+## 애플리케이션 다운로드 Windows
 
-You can directly download the latest pre-built version of **BgoFace for Windows** from our [Releases Page](https://github.com/Bgolearn/BgoFace/releases).
+**BgoFace for Windows** 최신 사전 빌드 버전은 [Releases 페이지](https://github.com/Bgolearn/BgoFace/releases)에서 직접 다운로드할 수 있습니다.
 
-### Steps:
+### 단계
 
-1. Navigate to the [Releases Section](https://github.com/Bgolearn/BgoFace/releases).
-2. Download the `.exe` file from the **latest release**.
-3. Run the file — no installation is required!
+1. [Releases Section](https://github.com/Bgolearn/BgoFace/releases)으로 이동합니다.
+2. 최신 릴리스의 `.exe` 파일을 다운로드합니다.
+3. 설치 없이 바로 실행합니다.
 
 ---
 
-## Architecture of BgoFace
+## BgoFace 아키텍처
 
-This diagram outlines how the components of BgoFace interact, from user input to backend computation:
+다음 그림은 사용자 입력부터 백엔드 계산까지 BgoFace 구성 요소의 상호 작용을 보여줍니다.
 
+<img src="https://github.com/user-attachments/assets/17d5b63a-6f10-4783-b95e-d645c39709f3" width="60%"/>
 
-<img src="https://github.com/user-attachments/assets/17d5b63a-6f10-4783-b95e-d645c39709f3" 
-     width="60%"/>
-     
 ---
 
-## UI Encapsulation Guide
+## UI 패키징 가이드
 
-To create a standalone desktop version of BgoFace yourself:
+BgoFace 독립 실행형 데스크톱 버전을 직접 만들려면:
 
-1. **Install Required Packages**
+1. **필수 패키지 설치**
 
    ```bash
    pip install pyqt5 pyinstaller
    ```
 
-2. **Build Executable with PyInstaller**
+2. **PyInstaller로 실행 파일 빌드**
 
    ```bash
    pyinstaller -F -w --add-data "Images;Images" main.py
    ```
 
-   * `-F`: Bundle into one file
-   * `-w`: Suppress console window
-   * `--add-data`: Include additional assets like images
+   * `-F`: 단일 파일로 번들링
+   * `-w`: 콘솔 창 숨김
+   * `--add-data`: 이미지 등 추가 자산 포함
 
 ---
 
-## Acknowledgement
+## 감사 및 인용
 
-If you use the code or data from this repository, please cite our related research publication.
+이 저장소의 코드 또는 데이터를 사용하는 경우 관련 연구 논문을 인용해 주십시오.
 
 ```bibtex
 @article{Cao2026Bgolearn,
@@ -174,9 +153,9 @@ If you use the code or data from this repository, please cite our related resear
 
 ---
 
-## License & Usage
+## 라이선스 및 사용
 
 © 2024 Bgolearn Development Team. All rights reserved.
 
-This software is for **academic and research use only**.
-**Commercial use is strictly prohibited** and subject to enforcement.
+이 소프트웨어는 **학술 및 연구 목적** 으로만 사용할 수 있습니다.
+**상업적 사용은 엄격히 금지** 됩니다.

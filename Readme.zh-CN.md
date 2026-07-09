@@ -1,10 +1,7 @@
-
-
 <h1 align="center">BgoFace</h1>
 
-
 <p align="center">
-  A user-friendly active learning platform built on Bgolearn for autonomous experimentation and accelerated materials optimization.
+  基于 Bgolearn 的友好型主动学习平台，用于自主实验与材料优化加速。
 </p>
 
 <p align="center">
@@ -19,27 +16,15 @@
   <a href="https://github.com/Bgolearn/BgoFace/stargazers">
     <img src="https://img.shields.io/github/stars/Bgolearn/BgoFace?style=social" alt="GitHub Stars">
   </a>
-
   <a href="https://github.com/Bgolearn/BgoFace/network/members">
     <img src="https://img.shields.io/github/forks/Bgolearn/BgoFace?style=social" alt="GitHub Forks">
   </a>
-
   <a href="https://github.com/Bgolearn/BgoFace/issues">
     <img src="https://img.shields.io/github/issues/Bgolearn/BgoFace" alt="Open Issues">
   </a>
-
-  <a href="https://github.com/Bgolearn/BgoFace/issues?q=is%3Aissue+is%3Aclosed">
-    <img src="https://img.shields.io/github/issues-closed/Bgolearn/BgoFace" alt="Closed Issues">
-  </a>
-
   <a href="https://github.com/Bgolearn/BgoFace/blob/main/LICENSE">
     <img src="https://img.shields.io/github/license/Bgolearn/BgoFace" alt="License">
   </a>
-
-  <a href="https://onlinelibrary.wiley.com/doi/pdf/10.1002/mgea.70031">
-    <img src="https://img.shields.io/badge/MGE%20Advances-2025-red" alt="Paper">
-  </a>
-
   <a href="https://doi.org/10.1038/s41524-026-02226-3">
     <img src="https://img.shields.io/badge/npj%20Computational%20Materials-2026-red" alt="Bgolearn Paper">
   </a>
@@ -60,93 +45,87 @@
   </a>
 </p>
 
+---
 
+**BgoFace** 是为 [Bgolearn](https://github.com/Bin-Cao/Bgolearn) 框架开发的用户友好型图形界面，由 [Cao Bin](https://www.caobin.asia/) 团队主导。BgoFace 面向材料发现加速，简化 **Bayesian global optimization (BGO)** 工作流，帮助用户连接实验设计与计算分析。
+
+BgoFace 提供直观控件、实验约束支持和主动学习算法入口，使用户无需深度机器学习背景也能开展高效材料探索。
+
+特别感谢 **Tianliang Li**、**Siyuan Liu**，以及 **Tong-Yi Zhang 教授** 和 **Lingyan Feng 教授** 的指导。
 
 ---
 
-**BgoFace** is a user-friendly interface developed for the [Bgolearn](https://github.com/Bin-Cao/Bgolearn) framework, led by [Cao Bin](https://www.caobin.asia/) and supported by the related Bgolearn publications. Designed to accelerate materials discovery, BgoFace simplifies **Bayesian global optimization (BGO)** workflows by bridging the gap between experimental and computational domains.
+## 资源路径
 
-With intuitive controls, integrated support for experimental constraints, and seamless access to active learning algorithms, BgoFace empowers users to conduct efficient materials exploration—without requiring deep expertise in machine learning.
-
-Special thanks to **Mr. Tianliang Li**, **Mr. Siyuan Liu**, and to the guidance of **Prof. Tong-Yi Zhang** and **Prof. Lingyan Feng**.
-
----
-
-## Resource Links
-
-| Resource | Description | Link |
+| 资源 | 说明 | 链接 |
 | --- | --- | --- |
-| **Bgolearn** | Core Bayesian optimization framework | [github.com/Bin-Cao/Bgolearn](https://github.com/Bin-Cao/Bgolearn) |
-| **MultiBgolearn** | Bgolearn multi-object module | [github.com/Bin-Cao/MultiBgolearn](https://github.com/Bin-Cao/MultiBgolearn) |
-| **BgoFace** | Official Bgolearn GUI | [github.com/Bgolearn/BgoFace](https://github.com/Bgolearn/BgoFace) |
-| **CodeDemo** | Example code and datasets | [github.com/Bgolearn/CodeDemo](https://github.com/Bgolearn/CodeDemo) |
+| **Bgolearn** | 贝叶斯优化核心框架 | [github.com/Bin-Cao/Bgolearn](https://github.com/Bin-Cao/Bgolearn) |
+| **MultiBgolearn** | Bgolearn 多目标模块 | [github.com/Bin-Cao/MultiBgolearn](https://github.com/Bin-Cao/MultiBgolearn) |
+| **BgoFace** | Bgolearn 官方 GUI | [github.com/Bgolearn/BgoFace](https://github.com/Bgolearn/BgoFace) |
+| **CodeDemo** | 示例代码和数据 | [github.com/Bgolearn/CodeDemo](https://github.com/Bgolearn/CodeDemo) |
 
 ---
 
+## 使用 BgoFace 设计材料
 
-## Design Materials Using BgoFace
+BgoFace 支持通过直观图形界面完成材料体系设计、可视化与分析。
 
-BgoFace allows users to design, visualize, and analyze material systems via an intuitive graphical interface.
-
-<img src="https://github.com/user-attachments/assets/30870d63-9f60-4837-897d-8453d48e5b34" 
-     width="60%"/>
+<img src="https://github.com/user-attachments/assets/30870d63-9f60-4837-897d-8453d48e5b34" width="60%"/>
 
 ---
 
-### Code Tutorial
+### 代码教程
 
-Get started quickly by watching our step-by-step video tutorial:
+可通过视频教程快速上手：
 [BiliBili: Intro to BgoFace](https://www.bilibili.com/video/BV1LTtLeaEZp/?spm_id_from=333.337.search-card.all.click)
 
 ---
 
-## Download the Application (Windows)
+## 下载应用程序 Windows 版
 
-You can directly download the latest pre-built version of **BgoFace for Windows** from our [Releases Page](https://github.com/Bgolearn/BgoFace/releases).
+可在 [Releases 页面](https://github.com/Bgolearn/BgoFace/releases) 直接下载最新的 **BgoFace for Windows** 预构建版本。
 
-### Steps:
+### 步骤
 
-1. Navigate to the [Releases Section](https://github.com/Bgolearn/BgoFace/releases).
-2. Download the `.exe` file from the **latest release**.
-3. Run the file — no installation is required!
+1. 进入 [Releases Section](https://github.com/Bgolearn/BgoFace/releases)。
+2. 下载最新版本中的 `.exe` 文件。
+3. 直接运行，无需安装。
 
 ---
 
-## Architecture of BgoFace
+## BgoFace 架构
 
-This diagram outlines how the components of BgoFace interact, from user input to backend computation:
+下图展示了 BgoFace 从用户输入到后端计算的组件交互关系：
 
+<img src="https://github.com/user-attachments/assets/17d5b63a-6f10-4783-b95e-d645c39709f3" width="60%"/>
 
-<img src="https://github.com/user-attachments/assets/17d5b63a-6f10-4783-b95e-d645c39709f3" 
-     width="60%"/>
-     
 ---
 
-## UI Encapsulation Guide
+## UI 打包指南
 
-To create a standalone desktop version of BgoFace yourself:
+如需自行创建 BgoFace 独立桌面版本：
 
-1. **Install Required Packages**
+1. **安装依赖包**
 
    ```bash
    pip install pyqt5 pyinstaller
    ```
 
-2. **Build Executable with PyInstaller**
+2. **使用 PyInstaller 构建可执行文件**
 
    ```bash
    pyinstaller -F -w --add-data "Images;Images" main.py
    ```
 
-   * `-F`: Bundle into one file
-   * `-w`: Suppress console window
-   * `--add-data`: Include additional assets like images
+   * `-F`：打包为单文件
+   * `-w`：隐藏控制台窗口
+   * `--add-data`：包含图片等额外资源
 
 ---
 
-## Acknowledgement
+## 致谢与引用
 
-If you use the code or data from this repository, please cite our related research publication.
+如果您使用本仓库中的代码或数据，请引用以下相关研究成果。
 
 ```bibtex
 @article{Cao2026Bgolearn,
@@ -174,9 +153,9 @@ If you use the code or data from this repository, please cite our related resear
 
 ---
 
-## License & Usage
+## 许可与使用
 
 © 2024 Bgolearn Development Team. All rights reserved.
 
-This software is for **academic and research use only**.
-**Commercial use is strictly prohibited** and subject to enforcement.
+本软件仅限 **学术与科研用途**。
+**严禁商业使用**，并保留追究权利。
